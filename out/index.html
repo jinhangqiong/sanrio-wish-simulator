@@ -2020,7 +2020,7 @@ body:has(#resultOverlay.show) #v56TrackWrap{
  const wrap=document.getElementById('v56TrackWrap');if(!wrap)return;
  const groups=[[5,10,25,40],[45,50,65,80],[85,90,105,120]];
  const cycle=g=>'<div class="rewardCycle"><img src="assets/reference-progress.png" alt="累计奖励"><div class="cycleLabels">'+g.map((v,i)=>'<button class="cycleReward c'+i+'" data-value="'+v+'" aria-label="累计'+v+'抽奖励"><span>'+v+'</span></button>').join('')+'</div></div>';
- wrap.innerHTML='<div id="fixedCurrent"><img src="assets/reference-progress.png" alt="当前累抽"><span id="referenceCount"></span></div><div id="exactTrackViewport" tabindex="0" role="group" aria-label="累计祈愿奖励，可左右拖动"><div id="compactRewardRail" class="exactRail">'+groups.map(cycle).join('')+'</div></div>';
+ wrap.innerHTML='<div id="fixedCurrent"><img src="assets/a5ce3f9834175655ddae.png" alt="当前累抽"><span id="referenceCount"></span></div><div id="exactTrackViewport" tabindex="0" role="group" aria-label="累计祈愿奖励，可左右拖动"><div id="compactRewardRail" class="exactRail">'+groups.map(cycle).join('')+'</div></div>';
  const view=document.getElementById('exactTrackViewport'),rail=document.getElementById('compactRewardRail');
  let x=0,start=0,base=0,drag=false,moved=false,pid=null,tap=null;
  const minX=()=>Math.min(0,view.clientWidth-rail.scrollWidth),paint=()=>{x=Math.max(minX(),Math.min(0,x));rail.style.transform='translate3d('+x+'px,0,0)'};
@@ -2030,7 +2030,7 @@ body:has(#resultOverlay.show) #v56TrackWrap{
  view.addEventListener('pointercancel',()=>{drag=false;pid=null;tap=null});
  view.addEventListener('wheel',e=>{x-=e.deltaY||e.deltaX;paint();e.preventDefault()},{passive:false});
  view.addEventListener('keydown',e=>{if(e.key==='ArrowRight')x-=120;else if(e.key==='ArrowLeft')x+=120;else if(e.key==='Home')x=0;else if(e.key==='End')x=minX();else return;paint();e.preventDefault()});
- function sync(){const n=document.getElementById('referenceCount'),count=state.count;n.textContent=count===0?'':String(count);document.querySelectorAll('.cycleReward').forEach(b=>{const v=+b.dataset.value,got=state.claimed.includes(v);b.classList.toggle('claimed',got);b.classList.toggle('ready',state.count>=v&&!got);b.disabled=got||state.count<v})}
+ function sync(){const n=document.getElementById('referenceCount'),count=state.count;n.textContent=String(count);document.querySelectorAll('.cycleReward').forEach(b=>{const v=+b.dataset.value,got=state.claimed.includes(v);b.classList.toggle('claimed',got);b.classList.toggle('ready',state.count>=v&&!got);b.disabled=got||state.count<v})}
  addEventListener('resize',paint);sync();setInterval(sync,160);paint();
 })();
 </script>
@@ -2044,7 +2044,7 @@ body:has(#resultOverlay.show) #v56TrackWrap{
 .rewardCycle{position:relative;flex:0 0 595px;width:595px;height:254px;overflow:hidden}
 .rewardCycle>img{position:absolute;left:-165px;top:0;width:760px;height:auto;max-width:none;pointer-events:none}
 .cycleLabels{position:absolute;inset:0}
-.cycleReward{position:absolute;top:143px;width:75px;height:50px;border:0;background:transparent;cursor:pointer;padding:0;color:#6c2707;font:900 23px/1 Arial,"Microsoft YaHei",sans-serif}
+.cycleReward{position:absolute;top:124px;width:75px;height:50px;border:0;background:transparent;cursor:pointer;padding:0;color:#6c2707;font:900 23px/1 Arial,"Microsoft YaHei",sans-serif}
 .cycleReward span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);min-width:58px;padding:4px 6px;border-radius:18px;background:linear-gradient(#fffde7,#fff3ae);box-shadow:inset 0 0 0 2px #f1c239;white-space:nowrap}
 .rewardCycle:first-child .cycleReward span{background:transparent;box-shadow:none;color:transparent;text-shadow:none}
 .cycleReward.c0{left:48px}.cycleReward.c1{left:184px}.cycleReward.c2{left:320px}.cycleReward.c3{left:470px;width:90px}
