@@ -1765,8 +1765,7 @@ body:has(#resultOverlay.show) #v56TrackWrap{
     if(track.parentElement!==hero) hero.appendChild(track);
     track.style.setProperty('left','50%','important');
     track.style.setProperty('right','auto','important');
-    track.style.removeProperty('bottom');
-    track.style.removeProperty('transform');
+    /* Keep final rail placement and scale; older center script must not reset them. */
   }
   centerTrack();
   new MutationObserver(centerTrack).observe(document.documentElement,{subtree:true,childList:true});
@@ -2034,9 +2033,9 @@ body:has(#resultOverlay.show) #v56TrackWrap{
    const hero=document.querySelector('.hero'),actions=document.querySelector('.hero .actions');
    if(!hero||!actions)return;
    const scale=0.72,heroRect=hero.getBoundingClientRect(),actionsRect=actions.getBoundingClientRect();
-   const cssBottom=heroRect.bottom-(actionsRect.top-50)-(254-254*scale);
-   wrap.style.setProperty('top','auto','important');
-   wrap.style.setProperty('bottom',cssBottom+'px','important');
+   const cssTop=actionsRect.bottom+50-heroRect.top;
+   wrap.style.setProperty('bottom','auto','important');
+   wrap.style.setProperty('top',cssTop+'px','important');
  }
  addEventListener('resize',()=>{paint();fitRail()});sync();setInterval(sync,160);paint();
  requestAnimationFrame(()=>requestAnimationFrame(fitRail));setTimeout(fitRail,250);setTimeout(fitRail,900);
