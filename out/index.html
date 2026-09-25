@@ -442,7 +442,7 @@ body{position:relative!important;overflow-x:hidden!important;}
 #bg4kStage{
   position:fixed!important;inset:0!important;z-index:0!important;
   overflow:hidden!important;pointer-events:none!important;
-  background:#160e2c url("assets/d8217d9d96f35e55130a.jpg") center center/cover no-repeat!important;
+  background:#160e2c!important;
 }
 #bg4kSolo{
   position:absolute!important;top:0!important;left:0!important;
@@ -462,7 +462,7 @@ body{position:relative!important;overflow-x:hidden!important;}
   display:block!important;
   visibility:visible!important;
   opacity:1!important;
-  background:#160e2c url("assets/d8217d9d96f35e55130a.jpg") center center/cover no-repeat!important;
+  background:#160e2c!important;
 }
 #bg4kSolo{
   display:block!important;
@@ -577,7 +577,7 @@ body{position:relative!important;overflow-x:hidden!important;}
 <body>
 
 <div id="bg4kStage" aria-hidden="true">
-  <video id="bg4kSolo" autoplay muted loop playsinline webkit-playsinline preload="auto">
+  <video id="bg4kSolo" autoplay muted loop playsinline webkit-playsinline x5-playsinline="true" x5-video-player-type="h5-page" x5-video-player-fullscreen="false" preload="auto">
     <source src="assets/56da0341070321a451b9.mp4" type="video/mp4">
   </video>
 </div>
@@ -585,15 +585,22 @@ body{position:relative!important;overflow-x:hidden!important;}
 (function(){
   const v=document.getElementById('bg4kSolo');
   if(!v) return;
-  v.muted=true; v.defaultMuted=true; v.loop=true; v.playsInline=true;
-  v.setAttribute('playsinline',''); v.setAttribute('webkit-playsinline','');
-  function safePlay(){ const p=v.play(); if(p&&p.catch) p.catch(()=>{}); }
-  v.addEventListener('loadeddata', safePlay, {once:true});
-  document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) safePlay(); });
-  document.addEventListener('touchstart', safePlay, {once:true, passive:true});
-  document.addEventListener('click', safePlay, {once:true});
-  document.addEventListener('WeixinJSBridgeReady', safePlay, {once:true});
-  safePlay();
+  function safePlay(){
+    v.muted=true;v.defaultMuted=true;v.loop=true;v.playsInline=true;
+    v.setAttribute('muted','');v.setAttribute('autoplay','');v.setAttribute('loop','');
+    v.setAttribute('playsinline','');v.setAttribute('webkit-playsinline','');
+    const p=v.play();if(p&&p.catch)p.catch(()=>{});
+  }
+  function resume(){safePlay();setTimeout(safePlay,80)}
+  v.addEventListener('loadedmetadata',safePlay);
+  v.addEventListener('canplay',safePlay);
+  document.addEventListener('WeixinJSBridgeReady',resume,false);
+  document.addEventListener('WeixinJSBridgeResume',resume,false);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)resume()});
+  window.addEventListener('pageshow',resume);
+  document.addEventListener('touchstart',safePlay,{once:true,passive:true});
+  document.addEventListener('click',safePlay,{once:true});
+  if(window.WeixinJSBridge)resume();else safePlay();
 })();
 </script>
 <div id="app">
