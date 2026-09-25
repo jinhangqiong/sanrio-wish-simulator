@@ -1849,4 +1849,121 @@ body:has(#resultOverlay.show) #v56TrackWrap{
   window.addEventListener('resize',placeSecondaryBanner);
 })();
 </script>
+<style id="v85-reference-layout">
+/* 图3式底部布局：固定当前累抽，右侧奖励横向滑动 */
+.hero>.milestones,
+.hero>div[style*="bottom:66px"]{display:none!important}
+.hero .actions{
+  bottom:24px!important;
+  gap:48px!important;
+  z-index:45!important;
+}
+.hero .wishAction{width:350px!important;height:122px!important}
+.hero #v56TrackWrap{
+  display:block!important;
+  left:50%!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:134px!important;
+  width:min(760px,78vw)!important;
+  height:142px!important;
+  transform:translateX(-50%)!important;
+  overflow:visible!important;
+  z-index:40!important;
+  user-select:none!important;
+  background:none!important;
+}
+#v56TrackImg,#v56FixedHeart,#v56DragMask{display:none!important}
+#compactCurrent{
+  position:absolute;left:0;top:0;z-index:3;width:154px;height:142px;overflow:hidden;
+  background:url("assets/a5ce3f9834175655ddae.png") left center/853px 284px no-repeat;
+  filter:drop-shadow(0 4px 7px rgba(53,22,116,.35));
+}
+#compactCurrentCount{
+  position:absolute;left:67px;top:57px;transform:translate(-50%,-50%);
+  color:#fff;font:1000 34px/1 Arial,"Microsoft YaHei",sans-serif;
+  -webkit-text-stroke:2px #3b249d;paint-order:stroke fill;
+  text-shadow:0 2px 0 #3b249d;
+}
+#compactRewardViewport{
+  position:absolute;left:134px;right:0;top:8px;height:126px;margin:0;overflow:hidden;
+  contain:layout paint;isolation:isolate;
+  cursor:grab;touch-action:pan-y;outline:none;
+  mask-image:linear-gradient(90deg,transparent 0,#000 4%,#000 96%,transparent 100%);
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 4%,#000 96%,transparent 100%);
+}
+#compactRewardViewport:active{cursor:grabbing}
+#compactRewardRail{
+  position:absolute;left:0;top:0;height:126px;display:flex;align-items:center;
+  flex-flow:row nowrap!important;width:max-content!important;
+  gap:26px;padding:0 32px 0 20px;will-change:transform;
+}
+#compactRewardRail:before{
+  content:"";position:absolute;left:0;right:0;top:55px;height:14px;
+  border-radius:10px;background:linear-gradient(#a878ff,#41228e 45%,#2d176d 55%,#8959ea);
+  box-shadow:0 0 7px #d9c2ff;z-index:-1;
+}
+.compactReward{
+  position:relative;display:block;flex:0 0 100px!important;width:100px!important;height:124px!important;padding:0;border:0;
+  background:transparent;color:#683313;cursor:pointer;
+}
+.compactRewardIcon{
+  position:absolute;left:2px;top:10px;width:96px;height:76px;overflow:hidden;
+  background:url("assets/a5ce3f9834175655ddae.png") -240px -68px/853px 284px no-repeat;
+  filter:drop-shadow(0 2px 5px rgba(44,21,105,.35));
+}
+.compactReward.points .compactRewardIcon{
+  width:108px;height:104px;left:-4px;top:-2px;
+  background-position:right -61px;
+}
+.compactRewardValue{
+  position:absolute;left:50%;bottom:7px;transform:translateX(-50%);
+  min-width:62px;padding:3px 11px 4px;border-radius:999px;
+  border:2px solid #efb63d;background:linear-gradient(#fffef0,#fff0a0);
+  color:#67310e;font:1000 20px/1 "Microsoft YaHei",sans-serif;
+  box-shadow:inset 0 1px 2px #fff,0 2px 4px #5d287955;
+}
+.compactReward.ready{animation:rewardGlow 1.15s ease-in-out infinite alternate}
+.compactReward.ready .compactRewardValue:after{content:"领取";position:absolute;left:50%;top:100%;transform:translate(-50%,3px);padding:2px 8px;border-radius:9px;background:#ffdd54;color:#6c3210;font-size:12px;white-space:nowrap}
+.compactReward.claimed{filter:saturate(.35);opacity:.72}
+.compactReward.claimed:after{content:"已领取";position:absolute;left:50%;top:42px;transform:translateX(-50%) rotate(-8deg);padding:2px 6px;border:2px solid #fff;border-radius:7px;background:#6747a8;color:#fff;font-weight:900;white-space:nowrap}
+@keyframes rewardGlow{to{filter:drop-shadow(0 0 10px #fff17d)}}
+@media(max-width:900px){
+ .hero #v56TrackWrap{width:min(720px,94vw)!important;bottom:118px!important;height:124px!important}
+ #compactCurrent{transform:scale(.86);transform-origin:left center;margin-right:-20px}
+ #compactRewardViewport{height:114px}
+ #compactRewardRail{transform-origin:left center}
+ .hero .actions{bottom:16px!important;gap:8px!important;width:96%!important;justify-content:center}
+ .hero .wishAction{width:calc((100vw - 32px)/2)!important;height:auto!important;aspect-ratio:350/122}
+}
+</style>
+<script id="v85-reference-layout-js">
+(function(){
+ const values=[5,10,25,40,45,50,65,80,85,90,105,120];
+ const points=new Set([40,80,120]);
+ function build(){
+   const wrap=document.getElementById('v56TrackWrap'); if(!wrap||document.getElementById('compactRewardRail'))return;
+   wrap.innerHTML='<div id="compactCurrent" aria-label="当前累抽"><span id="compactCurrentCount">0</span></div><div id="compactRewardViewport" tabindex="0" role="group" aria-label="累计祈愿奖励，可左右滑动"><div id="compactRewardRail"></div></div>';
+   const view=document.getElementById('compactRewardViewport'),rail=document.getElementById('compactRewardRail');
+   rail.innerHTML=values.map(v=>'<button class="compactReward '+(points.has(v)?'points':'skin')+'" data-value="'+v+'" aria-label="累计'+v+'抽奖励"><span class="compactRewardIcon"></span><span class="compactRewardValue">'+v+'</span></button>').join('');
+   let x=0,start=0,base=0,drag=false,pid=null;
+   const minX=()=>Math.min(0,view.clientWidth-rail.scrollWidth);
+   const paint=()=>{x=Math.max(minX(),Math.min(0,x));rail.style.transform='translate3d('+x+'px,0,0)'};
+   view.addEventListener('pointerdown',e=>{drag=true;pid=e.pointerId;start=e.clientX;base=x;view.setPointerCapture(pid);e.preventDefault()});
+   view.addEventListener('pointermove',e=>{if(!drag||e.pointerId!==pid)return;x=base+e.clientX-start;paint();e.preventDefault()});
+   const stop=()=>{drag=false;pid=null};view.addEventListener('pointerup',stop);view.addEventListener('pointercancel',stop);
+   view.addEventListener('wheel',e=>{x-=e.deltaY||e.deltaX;paint();e.preventDefault()},{passive:false});
+   view.addEventListener('keydown',e=>{if(e.key==='ArrowRight')x-=110;else if(e.key==='ArrowLeft')x+=110;else if(e.key==='Home')x=0;else if(e.key==='End')x=minX();else return;paint();e.preventDefault()});
+   rail.addEventListener('click',e=>{const b=e.target.closest('.compactReward');if(!b||drag)return;const v=+b.dataset.value;if(state.count>=v&&!state.claimed.includes(v))claimMilestone(v)});
+   addEventListener('resize',paint);paint();
+ }
+ function sync(){
+   build(); const wrap=document.getElementById('v56TrackWrap'),n=document.getElementById('compactCurrentCount');if(!n)return;
+   wrap.style.setProperty('bottom','134px','important');wrap.style.setProperty('top','auto','important');
+   n.textContent=String(state.count);
+   document.querySelectorAll('.compactReward').forEach(b=>{const v=+b.dataset.value,got=state.claimed.includes(v);b.classList.toggle('claimed',got);b.classList.toggle('ready',state.count>=v&&!got);b.disabled=got||state.count<v});
+ }
+ sync();setInterval(sync,160);
+})();
+</script>
 </body></html>
