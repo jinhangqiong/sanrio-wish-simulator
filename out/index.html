@@ -1765,8 +1765,8 @@ body:has(#resultOverlay.show) #v56TrackWrap{
     if(track.parentElement!==hero) hero.appendChild(track);
     track.style.setProperty('left','50%','important');
     track.style.setProperty('right','auto','important');
-    track.style.setProperty('bottom','190px','important');
-    track.style.setProperty('transform','translateX(-50%)','important');
+    track.style.removeProperty('bottom');
+    track.style.removeProperty('transform');
   }
   centerTrack();
   new MutationObserver(centerTrack).observe(document.documentElement,{subtree:true,childList:true});
@@ -1964,7 +1964,7 @@ body:has(#resultOverlay.show) #v56TrackWrap{
  }
  function sync(){
    build(); const wrap=document.getElementById('v56TrackWrap'),n=document.getElementById('compactCurrentCount');if(!n)return;
-   wrap.style.setProperty('bottom','128px','important');wrap.style.setProperty('top','auto','important');wrap.style.setProperty('transform','translateX(-50%) scale(.86)','important');
+   wrap.style.removeProperty('bottom');wrap.style.removeProperty('transform');
    n.textContent=String(state.count);
    document.querySelectorAll('.compactReward').forEach(b=>{const v=+b.dataset.value,got=state.claimed.includes(v);b.classList.toggle('claimed',got);b.classList.toggle('ready',state.count>=v&&!got);b.disabled=got||state.count<v});
  }
@@ -2031,23 +2031,25 @@ body:has(#resultOverlay.show) #v56TrackWrap{
  view.addEventListener('wheel',e=>{x-=e.deltaY||e.deltaX;paint();e.preventDefault()},{passive:false});
  view.addEventListener('keydown',e=>{if(e.key==='ArrowRight')x-=120;else if(e.key==='ArrowLeft')x+=120;else if(e.key==='Home')x=0;else if(e.key==='End')x=minX();else return;paint();e.preventDefault()});
  function sync(){const n=document.getElementById('referenceCount'),count=state.count;n.textContent=String(count);document.querySelectorAll('.cycleReward').forEach(b=>{const v=+b.dataset.value,got=state.claimed.includes(v);b.classList.toggle('claimed',got);b.classList.toggle('ready',state.count>=v&&!got);b.disabled=got||state.count<v})}
- function alignToWishes(){
-   const actions=document.querySelector('.actions');if(!actions)return;
-   const target=actions.getBoundingClientRect().top-50;
-   const bottom=wrap.getBoundingClientRect().bottom;
-   const current=parseFloat(getComputedStyle(wrap).getPropertyValue('--track-shift'))||200;
-   wrap.style.setProperty('--track-shift',(current+target-bottom)+'px');
+ function fitRail(){
+   const hero=document.querySelector('.hero'),actions=document.querySelector('.hero .actions');
+   if(!hero||!actions)return;
+   const scale=0.72,heroRect=hero.getBoundingClientRect(),actionsRect=actions.getBoundingClientRect();
+   const cssTop=actionsRect.top-50-heroRect.top-254*scale;
+   wrap.style.setProperty('top',cssTop+'px','important');
  }
- addEventListener('resize',()=>{paint();requestAnimationFrame(alignToWishes)});sync();setInterval(sync,160);paint();requestAnimationFrame(()=>requestAnimationFrame(alignToWishes));
+ addEventListener('resize',()=>{paint();fitRail()});sync();setInterval(sync,160);paint();
+ requestAnimationFrame(()=>requestAnimationFrame(fitRail));setTimeout(fitRail,250);setTimeout(fitRail,900);
 })();
 </script>
 <style id="v91-fixed-current-three-cycles">
-.hero #v56TrackWrap{--track-shift:200px;left:50%!important;top:calc(100% - 250px)!important;bottom:auto!important;width:760px!important;height:254px!important;transform:translateX(-50%) translateY(var(--track-shift)) scale(.75)!important;transform-origin:center bottom!important;overflow:visible!important}
+.hero #v56TrackWrap{left:50%!important;right:auto!important;top:0!important;bottom:auto!important;width:760px!important;height:254px!important;transform:translateX(-50%) scale(.72)!important;transform-origin:center top!important;overflow:visible!important}
 #fixedCurrent{position:absolute;left:0;top:31px;width:190px;height:254px;overflow:visible;z-index:5;pointer-events:none}
 #fixedCurrent>img{position:absolute;left:0;top:15px;width:190px;height:auto;max-width:none}
 #referenceCount{position:absolute;left:95px;top:78px;transform:translate(-50%,-50%);width:auto;height:auto;background:none!important;border:0!important;border-radius:0!important;color:#fff;font:1000 43px/1 Arial,"Microsoft YaHei",sans-serif;-webkit-text-stroke:4px #2e148e;paint-order:stroke fill;text-shadow:0 2px 0 #321895;z-index:8;white-space:nowrap}
 #exactTrackViewport{position:absolute;left:155px;right:0;top:0;height:254px;overflow:hidden;touch-action:none;cursor:grab;z-index:3}
 #compactRewardRail.exactRail{display:flex;width:max-content;height:254px;will-change:transform;transition:none}
+#exactTrackViewport,#compactRewardRail.exactRail,.rewardCycle{transform-origin:top left}
 .rewardCycle{position:relative;flex:0 0 595px;width:595px;height:254px;overflow:hidden}
 .rewardCycle>img{position:absolute;left:-165px;top:0;width:760px;height:auto;max-width:none;pointer-events:none}
 .rewardCycle.cycle1>img,.rewardCycle.cycle2>img{left:0;top:27px;width:595px}
@@ -2060,6 +2062,6 @@ body:has(#resultOverlay.show) #v56TrackWrap{
 .rewardCycle.cycle1 .cycleReward.c3,.rewardCycle.cycle2 .cycleReward.c3{left:438px;width:105px}
 .cycleReward.ready{filter:drop-shadow(0 0 10px #fff275)}
 .cycleReward.claimed:after{content:"已领取";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-7deg);padding:2px 6px;border:2px solid #fff;border-radius:7px;background:#6747a8;color:#fff;font:900 14px/1.2 "Microsoft YaHei";white-space:nowrap}
-@media(max-width:800px){.hero #v56TrackWrap{top:calc(100% - 235px)!important;width:94vw!important;height:31.4vw!important;transform:translateX(-50%) translateY(var(--track-shift)) scale(.82)!important}.hero #v56TrackWrap{--s:calc(94vw / 760)}#fixedCurrent,#exactTrackViewport,#compactRewardRail.exactRail,.rewardCycle{transform-origin:left top}#fixedCurrent{transform:scale(var(--s))}#exactTrackViewport{left:calc(155 * var(--s));right:0;height:calc(254 * var(--s))}#compactRewardRail.exactRail{transform-origin:left top}}
+@media(max-width:800px){.hero #v56TrackWrap{width:760px!important;height:254px!important;transform:translateX(-50%) scale(.72)!important;transform-origin:center top!important}#fixedCurrent,#exactTrackViewport,#compactRewardRail.exactRail,.rewardCycle{transform-origin:left top}}
 </style>
 </body></html>
