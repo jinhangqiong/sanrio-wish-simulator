@@ -2050,6 +2050,10 @@ body:has(#resultOverlay.show) #v56TrackWrap{
    // Align visible PNG artwork edges, not the transparent CSS boxes.
    wrap.style.setProperty('top',(currentTop+visibleGap-10)+'px','important');
  }
+ const currentArt=wrap.querySelector('#fixedCurrent img');
+ const wishImg=document.querySelector('.hero .actions .wishAction img');
+ if(currentArt)currentArt.addEventListener('load',()=>requestAnimationFrame(fitRail),{once:true});
+ if(wishImg)wishImg.addEventListener('load',()=>requestAnimationFrame(fitRail),{once:true});
  addEventListener('resize',()=>{paint();fitRail()});sync();setInterval(sync,160);paint();
  requestAnimationFrame(()=>requestAnimationFrame(fitRail));setTimeout(fitRail,250);setTimeout(fitRail,900);
 })();
