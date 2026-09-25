@@ -2020,7 +2020,7 @@ body:has(#resultOverlay.show) #v56TrackWrap{
  const wrap=document.getElementById('v56TrackWrap');if(!wrap)return;
  const groups=[[5,10,25,40],[45,50,65,80],[85,90,105,120]];
  const cycle=(g,index)=>'<div class="rewardCycle cycle'+index+'"><img src="'+(index===0?'assets/reference-progress.png':index===1?'assets/rewards-45-80.png':'assets/rewards-85-120.png')+'" alt="累计'+g[0]+'至'+g[3]+'抽奖励"><div class="cycleLabels">'+g.map((v,i)=>'<button class="cycleReward c'+i+'" data-value="'+v+'" aria-label="累计'+v+'抽奖励"></button>').join('')+'</div></div>';
- wrap.innerHTML='<div id="fixedCurrent"><img src="assets/a5ce3f9834175655ddae.png" alt="当前累抽"><span id="referenceCount"></span></div><div id="exactTrackViewport" tabindex="0" role="group" aria-label="累计祈愿奖励，可左右拖动"><div id="compactRewardRail" class="exactRail">'+groups.map(cycle).join('')+'</div></div>';
+ wrap.innerHTML='<div id="fixedCurrent"><img src="assets/current-heart-clean.png" alt="当前累抽"><span id="referenceCount"></span></div><div id="exactTrackViewport" tabindex="0" role="group" aria-label="累计祈愿奖励，可左右拖动"><div id="compactRewardRail" class="exactRail">'+groups.map(cycle).join('')+'</div></div>';
  const view=document.getElementById('exactTrackViewport'),rail=document.getElementById('compactRewardRail');
  let x=0,start=0,base=0,drag=false,moved=false,pid=null,tap=null;
  const minX=()=>Math.min(0,view.clientWidth-rail.scrollWidth),paint=()=>{x=Math.max(minX(),Math.min(0,x));rail.style.transform='translate3d('+x+'px,0,0)'};
@@ -2035,10 +2035,10 @@ body:has(#resultOverlay.show) #v56TrackWrap{
 })();
 </script>
 <style id="v91-fixed-current-three-cycles">
-.hero #v56TrackWrap{left:50%!important;top:calc(100% - 250px)!important;bottom:auto!important;width:760px!important;height:254px!important;transform:translateX(-50%) scale(.9)!important;transform-origin:center bottom!important;overflow:visible!important}
-#fixedCurrent{position:absolute;left:0;top:0;width:178px;height:254px;overflow:hidden;z-index:5;pointer-events:none}
-#fixedCurrent>img{position:absolute;left:0;top:0;width:760px;height:auto;max-width:none}
-#referenceCount{position:absolute;left:98px;top:108px;transform:translate(-50%,-50%);width:auto;height:auto;background:none!important;border:0!important;border-radius:0!important;color:#fff;font:1000 43px/1 Arial,"Microsoft YaHei",sans-serif;-webkit-text-stroke:4px #2e148e;paint-order:stroke fill;text-shadow:0 2px 0 #321895;z-index:8;white-space:nowrap}
+.hero #v56TrackWrap{left:50%!important;top:calc(100% - 250px)!important;bottom:auto!important;width:760px!important;height:254px!important;transform:translateX(-50%) translateY(200px) scale(.9)!important;transform-origin:center bottom!important;overflow:visible!important}
+#fixedCurrent{position:absolute;left:0;top:0;width:190px;height:254px;overflow:visible;z-index:5;pointer-events:none}
+#fixedCurrent>img{position:absolute;left:0;top:15px;width:190px;height:auto;max-width:none}
+#referenceCount{position:absolute;left:95px;top:78px;transform:translate(-50%,-50%);width:auto;height:auto;background:none!important;border:0!important;border-radius:0!important;color:#fff;font:1000 43px/1 Arial,"Microsoft YaHei",sans-serif;-webkit-text-stroke:4px #2e148e;paint-order:stroke fill;text-shadow:0 2px 0 #321895;z-index:8;white-space:nowrap}
 #exactTrackViewport{position:absolute;left:155px;right:0;top:0;height:254px;overflow:hidden;touch-action:none;cursor:grab;z-index:3}
 #compactRewardRail.exactRail{display:flex;width:max-content;height:254px;will-change:transform;transition:none}
 .rewardCycle{position:relative;flex:0 0 595px;width:595px;height:254px;overflow:hidden}
@@ -2053,6 +2053,6 @@ body:has(#resultOverlay.show) #v56TrackWrap{
 .rewardCycle.cycle1 .cycleReward.c3,.rewardCycle.cycle2 .cycleReward.c3{left:438px;width:105px}
 .cycleReward.ready{filter:drop-shadow(0 0 10px #fff275)}
 .cycleReward.claimed:after{content:"已领取";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-7deg);padding:2px 6px;border:2px solid #fff;border-radius:7px;background:#6747a8;color:#fff;font:900 14px/1.2 "Microsoft YaHei";white-space:nowrap}
-@media(max-width:800px){.hero #v56TrackWrap{top:calc(100% - 235px)!important;width:94vw!important;height:31.4vw!important;transform:translateX(-50%)!important}.hero #v56TrackWrap{--s:calc(94vw / 760)}#fixedCurrent,#exactTrackViewport,#compactRewardRail.exactRail,.rewardCycle{transform-origin:left top}#fixedCurrent{transform:scale(var(--s))}#exactTrackViewport{left:calc(155 * var(--s));right:0;height:calc(254 * var(--s))}#compactRewardRail.exactRail{transform-origin:left top}}
+@media(max-width:800px){.hero #v56TrackWrap{top:calc(100% - 235px)!important;width:94vw!important;height:31.4vw!important;transform:translateX(-50%) translateY(200px)!important}.hero #v56TrackWrap{--s:calc(94vw / 760)}#fixedCurrent,#exactTrackViewport,#compactRewardRail.exactRail,.rewardCycle{transform-origin:left top}#fixedCurrent{transform:scale(var(--s))}#exactTrackViewport{left:calc(155 * var(--s));right:0;height:calc(254 * var(--s))}#compactRewardRail.exactRail{transform-origin:left top}}
 </style>
 </body></html>
