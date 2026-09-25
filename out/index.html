@@ -2031,11 +2031,18 @@ body:has(#resultOverlay.show) #v56TrackWrap{
  view.addEventListener('wheel',e=>{x-=e.deltaY||e.deltaX;paint();e.preventDefault()},{passive:false});
  view.addEventListener('keydown',e=>{if(e.key==='ArrowRight')x-=120;else if(e.key==='ArrowLeft')x+=120;else if(e.key==='Home')x=0;else if(e.key==='End')x=minX();else return;paint();e.preventDefault()});
  function sync(){const n=document.getElementById('referenceCount'),count=state.count;n.textContent=String(count);document.querySelectorAll('.cycleReward').forEach(b=>{const v=+b.dataset.value,got=state.claimed.includes(v);b.classList.toggle('claimed',got);b.classList.toggle('ready',state.count>=v&&!got);b.disabled=got||state.count<v})}
- addEventListener('resize',paint);sync();setInterval(sync,160);paint();
+ function alignToWishes(){
+   const actions=document.querySelector('.actions');if(!actions)return;
+   const target=actions.getBoundingClientRect().top-50;
+   const bottom=wrap.getBoundingClientRect().bottom;
+   const current=parseFloat(getComputedStyle(wrap).getPropertyValue('--track-shift'))||200;
+   wrap.style.setProperty('--track-shift',(current+target-bottom)+'px');
+ }
+ addEventListener('resize',()=>{paint();requestAnimationFrame(alignToWishes)});sync();setInterval(sync,160);paint();requestAnimationFrame(()=>requestAnimationFrame(alignToWishes));
 })();
 </script>
 <style id="v91-fixed-current-three-cycles">
-.hero #v56TrackWrap{left:50%!important;top:calc(100% - 250px)!important;bottom:auto!important;width:760px!important;height:254px!important;transform:translateX(-50%) translateY(200px) scale(.9)!important;transform-origin:center bottom!important;overflow:visible!important}
+.hero #v56TrackWrap{--track-shift:200px;left:50%!important;top:calc(100% - 250px)!important;bottom:auto!important;width:760px!important;height:254px!important;transform:translateX(-50%) translateY(var(--track-shift)) scale(.75)!important;transform-origin:center bottom!important;overflow:visible!important}
 #fixedCurrent{position:absolute;left:0;top:31px;width:190px;height:254px;overflow:visible;z-index:5;pointer-events:none}
 #fixedCurrent>img{position:absolute;left:0;top:15px;width:190px;height:auto;max-width:none}
 #referenceCount{position:absolute;left:95px;top:78px;transform:translate(-50%,-50%);width:auto;height:auto;background:none!important;border:0!important;border-radius:0!important;color:#fff;font:1000 43px/1 Arial,"Microsoft YaHei",sans-serif;-webkit-text-stroke:4px #2e148e;paint-order:stroke fill;text-shadow:0 2px 0 #321895;z-index:8;white-space:nowrap}
@@ -2053,6 +2060,6 @@ body:has(#resultOverlay.show) #v56TrackWrap{
 .rewardCycle.cycle1 .cycleReward.c3,.rewardCycle.cycle2 .cycleReward.c3{left:438px;width:105px}
 .cycleReward.ready{filter:drop-shadow(0 0 10px #fff275)}
 .cycleReward.claimed:after{content:"已领取";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-7deg);padding:2px 6px;border:2px solid #fff;border-radius:7px;background:#6747a8;color:#fff;font:900 14px/1.2 "Microsoft YaHei";white-space:nowrap}
-@media(max-width:800px){.hero #v56TrackWrap{top:calc(100% - 235px)!important;width:94vw!important;height:31.4vw!important;transform:translateX(-50%) translateY(200px)!important}.hero #v56TrackWrap{--s:calc(94vw / 760)}#fixedCurrent,#exactTrackViewport,#compactRewardRail.exactRail,.rewardCycle{transform-origin:left top}#fixedCurrent{transform:scale(var(--s))}#exactTrackViewport{left:calc(155 * var(--s));right:0;height:calc(254 * var(--s))}#compactRewardRail.exactRail{transform-origin:left top}}
+@media(max-width:800px){.hero #v56TrackWrap{top:calc(100% - 235px)!important;width:94vw!important;height:31.4vw!important;transform:translateX(-50%) translateY(var(--track-shift)) scale(.82)!important}.hero #v56TrackWrap{--s:calc(94vw / 760)}#fixedCurrent,#exactTrackViewport,#compactRewardRail.exactRail,.rewardCycle{transform-origin:left top}#fixedCurrent{transform:scale(var(--s))}#exactTrackViewport{left:calc(155 * var(--s));right:0;height:calc(254 * var(--s))}#compactRewardRail.exactRail{transform-origin:left top}}
 </style>
 </body></html>
