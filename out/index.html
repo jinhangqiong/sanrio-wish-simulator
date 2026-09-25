@@ -2033,7 +2033,7 @@ body:has(#resultOverlay.show) #v56TrackWrap{
    const hero=document.querySelector('.hero'),actions=document.querySelector('.hero .actions');
    if(!hero||!actions)return;
    const scale=0.72,heroRect=hero.getBoundingClientRect(),actionsRect=actions.getBoundingClientRect();
-   const cssTop=actionsRect.bottom+50-heroRect.top;
+   const cssTop=actionsRect.top-10-heroRect.top-254*scale;
    wrap.style.setProperty('bottom','auto','important');
    wrap.style.setProperty('top',cssTop+'px','important');
  }
