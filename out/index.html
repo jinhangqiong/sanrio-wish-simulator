@@ -437,17 +437,18 @@ function formatSkinRewardText(s){
 
 <style id="BG4K_SINGLEFILE">
 /* 只覆盖原背景，不改任何前景元素 */
-html,body{background:#000!important;}
+html,body{background:#160e2c!important;}
 body{position:relative!important;overflow-x:hidden!important;}
 #bg4kStage{
   position:fixed!important;inset:0!important;z-index:0!important;
-  overflow:hidden!important;pointer-events:none!important;background:#000!important;
+  overflow:hidden!important;pointer-events:none!important;
+  background:#160e2c url("assets/d8217d9d96f35e55130a.jpg") center center/cover no-repeat!important;
 }
 #bg4kSolo{
   position:absolute!important;top:0!important;left:0!important;
-  width:100vw!important;height:100vh!important;
+  width:100vw!important;height:100vh!important;height:100dvh!important;
   object-fit:cover!important;object-position:center center!important;
-  background:#000!important;pointer-events:none!important;
+  background:transparent!important;pointer-events:none!important;
 }
 #app{
   position:relative!important;z-index:1!important;
@@ -461,7 +462,7 @@ body{position:relative!important;overflow-x:hidden!important;}
   display:block!important;
   visibility:visible!important;
   opacity:1!important;
-  background:#000!important;
+  background:#160e2c url("assets/d8217d9d96f35e55130a.jpg") center center/cover no-repeat!important;
 }
 #bg4kSolo{
   display:block!important;
@@ -471,7 +472,7 @@ body{position:relative!important;overflow-x:hidden!important;}
   height:100vh!important;
   object-fit:cover!important;
   object-position:center center!important;
-  background:#000!important;
+  background:transparent!important;
 }
 </style>
 
@@ -570,7 +571,6 @@ body{position:relative!important;overflow-x:hidden!important;}
 .wishAction:active{transform:scale(.97)}
 .wishAction:focus-visible{outline:3px solid #fff4b0;outline-offset:4px}
 .skyBannerSecondary{visibility:visible;right:1vw;top:calc(.8vh + min(34vw,650px) * 682 / 2048 + 10px);width:min(34vw,650px);aspect-ratio:2048/682}
-.loot .item{animation:none!important}
 @media(max-width:900px){.skyBannerSecondary{right:.5vw;width:39vw;top:calc(.8vh + 39vw * 682 / 2048 + 10px)}}
 @media(max-width:760px){.actions{width:96%;gap:8px;justify-content:center}.wishAction{width:calc((100vw - 32px)/2);height:auto;aspect-ratio:350/122}}
 </style></head>
@@ -2031,7 +2031,8 @@ body:has(#resultOverlay.show) #v56TrackWrap{
  function sync(){const n=document.getElementById('referenceCount'),count=state.count;n.textContent=String(count);document.querySelectorAll('.cycleReward').forEach(b=>{const v=+b.dataset.value,got=state.claimed.includes(v);b.classList.toggle('claimed',got);b.classList.toggle('ready',state.count>=v&&!got);b.disabled=got||state.count<v})}
  function fitScale(){
    const hero=document.querySelector('.hero');if(!hero)return;
-   const scale=innerWidth<=800?Math.min(.72,Math.max(.34,(hero.clientWidth-24)/760)):.72;
+   const landscape=matchMedia('(orientation:landscape) and (max-height:600px)').matches;
+   const scale=landscape?Math.min(.46,Math.max(.34,(hero.clientWidth-24)/760)):(innerWidth<=800?Math.min(.72,Math.max(.34,(hero.clientWidth-24)/760)):.72);
    wrap.style.setProperty('--track-scale',String(scale));
  }
  function fitRail(){
@@ -2050,11 +2051,12 @@ body:has(#resultOverlay.show) #v56TrackWrap{
    const currentArtRect=currentArt.getBoundingClientRect();
    // Ignore the PNG's nearly transparent soft-shadow tail (visible alpha ends
    // at about 94% of its height); measure the heart/label artwork itself.
-   const currentArtBottom=currentArtRect.top+currentArtRect.height*(1083/1149);
-   const currentTop=parseFloat(getComputedStyle(wrap).top)||0;
-   const visibleGap=visibleWishTop-currentArtBottom;
-   // Align visible PNG artwork edges, not the transparent CSS boxes.
-   wrap.style.setProperty('top',(currentTop+visibleGap-10)+'px','important');
+   const wrapRect=wrap.getBoundingClientRect();
+   const artBottomOffset=currentArtRect.top-wrapRect.top+currentArtRect.height*(1083/1149);
+   // CSS top translates the scaled wrapper in viewport pixels; only the artwork
+   // inside the wrapper is scaled. Place the wrapper from the visible PNG edges.
+   const targetTop=visibleWishTop-hero.getBoundingClientRect().top-10-artBottomOffset;
+   wrap.style.setProperty('top',targetTop+'px','important');
  }
  const currentArt=wrap.querySelector('#fixedCurrent img');
  const wishImg=document.querySelector('.hero .actions .wishAction img');
@@ -2086,5 +2088,21 @@ body:has(#resultOverlay.show) #v56TrackWrap{
 .cycleReward.claimed:after{content:"已领取";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-7deg);padding:2px 6px;border:2px solid #fff;border-radius:7px;background:#6747a8;color:#fff;font:900 14px/1.2 "Microsoft YaHei";white-space:nowrap}
 @media(max-width:800px){.hero #v56TrackWrap{width:760px!important;height:254px!important;transform:translateX(-50%) scale(var(--track-scale,.72))!important;transform-origin:center top!important}#fixedCurrent,#exactTrackViewport,#compactRewardRail.exactRail,.rewardCycle{transform-origin:left top}}
 @media(max-width:800px){.hero .actions{bottom:calc(16px + env(safe-area-inset-bottom))!important}.side{top:calc(132px + env(safe-area-inset-top));right:8px;bottom:auto;gap:7px;z-index:60}.side button{padding:8px 10px;font-size:12px;line-height:1.2;border-radius:16px}}
+</style>
+<style id="wechat-landscape-single-screen">
+@media screen and (orientation:landscape) and (max-height:600px){
+  html,body{height:100%!important;min-height:0!important;overflow:hidden!important}
+  #app,.hero{height:100vh!important;height:100dvh!important;min-height:0!important;overflow:hidden!important}
+  #bg4kStage{height:100vh!important;height:100dvh!important}
+  #bg4kSolo{height:100vh!important;height:100dvh!important}
+  .titleBanner{top:2px!important;left:1vw!important;width:min(32vw,270px)!important}
+  .liveCoinPatch{right:42vw!important;top:4px!important;width:min(150px,18vw)!important;height:min(50px,12vh)!important}
+  .wishBanner{top:2px!important;right:1vw!important;width:min(28vw,240px)!important;aspect-ratio:2048/682!important}
+  #skyBannerSecondary{top:calc(7px + min(28vw,240px) * 682 / 2048)!important;left:auto!important;right:1vw!important;width:min(28vw,240px)!important;height:auto!important;aspect-ratio:2048/682!important}
+  .hero .actions{bottom:calc(10px + env(safe-area-inset-bottom))!important;gap:8px!important;width:96vw!important;justify-content:center!important}
+  .hero .wishAction{width:min(350px,calc((100vw - 32px)/2))!important;height:auto!important;aspect-ratio:350/122!important}
+  .side{top:calc(14px + min(28vw,240px) * 682 / 2048 * 2)!important;right:1vw!important;left:auto!important;bottom:auto!important;display:flex!important;flex-direction:row!important;gap:4px!important;z-index:60!important}
+  .side button{padding:5px 7px!important;font-size:clamp(8px,1.25vw,11px)!important;line-height:1!important;white-space:nowrap!important}
+}
 </style>
 </body></html>
