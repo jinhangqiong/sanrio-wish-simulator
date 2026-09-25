@@ -1971,4 +1971,67 @@ body:has(#resultOverlay.show) #v56TrackWrap{
  sync();setInterval(sync,160);
 })();
 </script>
+<style id="v90-exact-reference-track">
+.hero #v56TrackWrap{
+  width:min(760px,92vw)!important;height:254px!important;bottom:112px!important;
+  transform:translateX(-50%) scale(.9)!important;transform-origin:center bottom!important;
+  overflow:hidden!important;background:none!important;
+}
+.hero #v56TrackWrap:before{content:none!important}
+#exactTrackViewport{position:absolute;inset:0;overflow:hidden;cursor:grab;touch-action:pan-y;outline:none}
+#exactTrackViewport:active{cursor:grabbing}
+#compactRewardRail.exactRail{
+  position:absolute;left:0;top:0;height:254px;width:max-content!important;
+  display:flex;align-items:flex-start;gap:0;padding:0;will-change:transform;
+}
+#exactReferenceStage{position:relative;flex:0 0 760px;width:760px;height:254px;overflow:hidden}
+#exactReferenceStage>img{display:block;width:760px;height:auto;pointer-events:none}
+#referenceCount{
+  position:absolute;left:11.35%;top:42.5%;transform:translate(-50%,-50%);
+  display:grid;place-items:center;width:62px;height:82px;border-radius:46%;
+  background:transparent;
+  color:#fff;font:1000 42px/1 Arial,"Microsoft YaHei",sans-serif;
+  -webkit-text-stroke:3px #2e148e;paint-order:stroke fill;text-shadow:0 2px 0 #321895;
+  pointer-events:none;
+}
+#referenceCount.hasValue{background:radial-gradient(ellipse,#765bdd 0%,#6043cf 70%,#5335bf 100%)}
+.exactHotspot{position:absolute;top:52%;width:12%;height:23%;border:0;background:transparent;cursor:pointer}
+.exactHotspot[data-value="5"]{left:26.1%}.exactHotspot[data-value="10"]{left:44.6%}.exactHotspot[data-value="25"]{left:63.0%}.exactHotspot[data-value="40"]{left:82.7%;width:14%}
+.exactHotspot.ready{filter:drop-shadow(0 0 10px #fff275)}
+.exactHotspot.claimed:after{content:"已领取";position:absolute;left:50%;top:54%;transform:translate(-50%,-50%) rotate(-7deg);padding:2px 7px;border:2px solid #fff;border-radius:7px;background:#6747a8;color:#fff;font-weight:900;white-space:nowrap}
+#exactLater{position:relative;flex:0 0 auto;height:254px;display:flex;align-items:flex-start;gap:26px;padding:44px 45px 0 28px}
+#exactLater:before{content:"";position:absolute;left:0;right:0;top:104px;height:16px;background:linear-gradient(#c495ff,#5126a0 48%,#331574 55%,#9563f0);box-shadow:0 0 7px #d9c2ff;z-index:-1}
+#exactLater .compactReward{flex:0 0 112px!important;width:112px!important;height:170px!important}
+#exactLater .compactRewardIcon{left:8px;top:4px;width:96px;height:88px;background-size:750px 249px;background-position:-204px -58px}
+#exactLater .compactReward.points{flex-basis:144px!important;width:144px!important}
+#exactLater .compactReward.points .compactRewardIcon{width:152px;height:132px;left:-4px;top:-7px;background-size:750px 249px;background-position:right -42px}
+#exactLater .compactRewardValue{bottom:10px;font-size:22px;min-width:70px}
+#exactLater .compactReward.points .compactRewardValue{bottom:21px;min-width:78px}
+@media(max-width:800px){
+ .hero #v56TrackWrap{width:94vw!important;height:31.4vw!important;bottom:104px!important;transform:translateX(-50%)!important}
+ #compactRewardRail.exactRail{height:31.4vw}
+ #exactReferenceStage{flex-basis:94vw;width:94vw;height:31.4vw}
+ #exactReferenceStage>img{width:94vw}
+ #referenceCount{width:7.7vw;height:10.2vw;font-size:5.2vw;-webkit-text-stroke:2px #2e148e}
+}
+</style>
+<script id="v90-exact-reference-track-js">
+(function(){
+ const later=[45,50,65,80,85,90,105,120],points=new Set([80,120]);
+ const wrap=document.getElementById('v56TrackWrap');if(!wrap)return;
+ wrap.innerHTML='<div id="exactTrackViewport" tabindex="0" role="group" aria-label="累计祈愿奖励，可左右拖动"><div id="compactRewardRail" class="exactRail"><div id="exactReferenceStage"><img src="assets/reference-progress.png" alt="当前累抽及5、10、25、40抽奖励"><span id="referenceCount">0</span><button class="exactHotspot" data-value="5" aria-label="累计5抽奖励"></button><button class="exactHotspot" data-value="10" aria-label="累计10抽奖励"></button><button class="exactHotspot" data-value="25" aria-label="累计25抽奖励"></button><button class="exactHotspot" data-value="40" aria-label="累计40抽奖励"></button></div><div id="exactLater"></div></div></div>';
+ const view=document.getElementById('exactTrackViewport'),rail=document.getElementById('compactRewardRail'),tail=document.getElementById('exactLater');
+ tail.innerHTML=later.map(v=>'<button class="compactReward '+(points.has(v)?'points':'skin')+'" data-value="'+v+'" aria-label="累计'+v+'抽奖励"><span class="compactRewardIcon"></span><span class="compactRewardValue">'+v+'</span></button>').join('');
+ let x=0,start=0,base=0,drag=false,moved=false,pid=null,tap=null;
+ const minX=()=>Math.min(0,view.clientWidth-rail.scrollWidth),paint=()=>{x=Math.max(minX(),Math.min(0,x));rail.style.transform='translate3d('+x+'px,0,0)'};
+ view.addEventListener('pointerdown',e=>{drag=true;moved=false;pid=e.pointerId;start=e.clientX;base=x;tap=e.target.closest('.exactHotspot,.compactRewardValue')?.closest('button')||null;view.setPointerCapture(pid)});
+ view.addEventListener('pointermove',e=>{if(!drag||e.pointerId!==pid)return;const dx=e.clientX-start;if(Math.abs(dx)>7)moved=true;x=base+dx;paint();if(moved)e.preventDefault()});
+ view.addEventListener('pointerup',e=>{if(!drag||e.pointerId!==pid)return;const b=tap,wasMoved=moved;drag=false;pid=null;tap=null;if(b&&!wasMoved){const v=+b.dataset.value;if(state.count>=v&&!state.claimed.includes(v))claimMilestone(v)}e.preventDefault()});
+ view.addEventListener('pointercancel',()=>{drag=false;pid=null;tap=null});
+ view.addEventListener('wheel',e=>{x-=e.deltaY||e.deltaX;paint();e.preventDefault()},{passive:false});
+ view.addEventListener('keydown',e=>{if(e.key==='ArrowRight')x-=120;else if(e.key==='ArrowLeft')x+=120;else if(e.key==='Home')x=0;else if(e.key==='End')x=minX();else return;paint();e.preventDefault()});
+ function sync(){const n=document.getElementById('referenceCount'),count=state.count;n.textContent=count===0?'':String(count);n.classList.toggle('hasValue',count!==0);document.querySelectorAll('.exactHotspot,#exactLater .compactReward').forEach(b=>{const v=+b.dataset.value,got=state.claimed.includes(v);b.classList.toggle('claimed',got);b.classList.toggle('ready',state.count>=v&&!got);b.disabled=got||state.count<v});wrap.style.setProperty('bottom','112px','important');wrap.style.setProperty('transform','translateX(-50%) scale(.9)','important')}
+ addEventListener('resize',paint);sync();setInterval(sync,160);paint();
+})();
+</script>
 </body></html>
