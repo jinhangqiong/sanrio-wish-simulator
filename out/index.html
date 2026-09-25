@@ -2017,21 +2017,39 @@ body:has(#resultOverlay.show) #v56TrackWrap{
 </style>
 <script id="v90-exact-reference-track-js">
 (function(){
- const later=[45,50,65,80,85,90,105,120],points=new Set([80,120]);
  const wrap=document.getElementById('v56TrackWrap');if(!wrap)return;
- wrap.innerHTML='<div id="exactTrackViewport" tabindex="0" role="group" aria-label="累计祈愿奖励，可左右拖动"><div id="compactRewardRail" class="exactRail"><div id="exactReferenceStage"><img src="assets/reference-progress.png" alt="当前累抽及5、10、25、40抽奖励"><span id="referenceCount">0</span><button class="exactHotspot" data-value="5" aria-label="累计5抽奖励"></button><button class="exactHotspot" data-value="10" aria-label="累计10抽奖励"></button><button class="exactHotspot" data-value="25" aria-label="累计25抽奖励"></button><button class="exactHotspot" data-value="40" aria-label="累计40抽奖励"></button></div><div id="exactLater"></div></div></div>';
- const view=document.getElementById('exactTrackViewport'),rail=document.getElementById('compactRewardRail'),tail=document.getElementById('exactLater');
- tail.innerHTML=later.map(v=>'<button class="compactReward '+(points.has(v)?'points':'skin')+'" data-value="'+v+'" aria-label="累计'+v+'抽奖励"><span class="compactRewardIcon"></span><span class="compactRewardValue">'+v+'</span></button>').join('');
+ const groups=[[5,10,25,40],[45,50,65,80],[85,90,105,120]];
+ const cycle=g=>'<div class="rewardCycle"><img src="assets/reference-progress.png" alt="累计奖励"><div class="cycleLabels">'+g.map((v,i)=>'<button class="cycleReward c'+i+'" data-value="'+v+'" aria-label="累计'+v+'抽奖励"><span>'+v+'</span></button>').join('')+'</div></div>';
+ wrap.innerHTML='<div id="fixedCurrent"><img src="assets/reference-progress.png" alt="当前累抽"><span id="referenceCount"></span></div><div id="exactTrackViewport" tabindex="0" role="group" aria-label="累计祈愿奖励，可左右拖动"><div id="compactRewardRail" class="exactRail">'+groups.map(cycle).join('')+'</div></div>';
+ const view=document.getElementById('exactTrackViewport'),rail=document.getElementById('compactRewardRail');
  let x=0,start=0,base=0,drag=false,moved=false,pid=null,tap=null;
  const minX=()=>Math.min(0,view.clientWidth-rail.scrollWidth),paint=()=>{x=Math.max(minX(),Math.min(0,x));rail.style.transform='translate3d('+x+'px,0,0)'};
- view.addEventListener('pointerdown',e=>{drag=true;moved=false;pid=e.pointerId;start=e.clientX;base=x;tap=e.target.closest('.exactHotspot,.compactRewardValue')?.closest('button')||null;view.setPointerCapture(pid)});
+ view.addEventListener('pointerdown',e=>{drag=true;moved=false;pid=e.pointerId;start=e.clientX;base=x;tap=e.target.closest('.cycleReward');view.setPointerCapture(pid)});
  view.addEventListener('pointermove',e=>{if(!drag||e.pointerId!==pid)return;const dx=e.clientX-start;if(Math.abs(dx)>7)moved=true;x=base+dx;paint();if(moved)e.preventDefault()});
  view.addEventListener('pointerup',e=>{if(!drag||e.pointerId!==pid)return;const b=tap,wasMoved=moved;drag=false;pid=null;tap=null;if(b&&!wasMoved){const v=+b.dataset.value;if(state.count>=v&&!state.claimed.includes(v))claimMilestone(v)}e.preventDefault()});
  view.addEventListener('pointercancel',()=>{drag=false;pid=null;tap=null});
  view.addEventListener('wheel',e=>{x-=e.deltaY||e.deltaX;paint();e.preventDefault()},{passive:false});
  view.addEventListener('keydown',e=>{if(e.key==='ArrowRight')x-=120;else if(e.key==='ArrowLeft')x+=120;else if(e.key==='Home')x=0;else if(e.key==='End')x=minX();else return;paint();e.preventDefault()});
- function sync(){const n=document.getElementById('referenceCount'),count=state.count;n.textContent=count===0?'':String(count);n.classList.toggle('hasValue',count!==0);document.querySelectorAll('.exactHotspot,#exactLater .compactReward').forEach(b=>{const v=+b.dataset.value,got=state.claimed.includes(v);b.classList.toggle('claimed',got);b.classList.toggle('ready',state.count>=v&&!got);b.disabled=got||state.count<v});wrap.style.setProperty('bottom','112px','important');wrap.style.setProperty('transform','translateX(-50%) scale(.9)','important')}
+ function sync(){const n=document.getElementById('referenceCount'),count=state.count;n.textContent=count===0?'':String(count);document.querySelectorAll('.cycleReward').forEach(b=>{const v=+b.dataset.value,got=state.claimed.includes(v);b.classList.toggle('claimed',got);b.classList.toggle('ready',state.count>=v&&!got);b.disabled=got||state.count<v})}
  addEventListener('resize',paint);sync();setInterval(sync,160);paint();
 })();
 </script>
+<style id="v91-fixed-current-three-cycles">
+.hero #v56TrackWrap{left:50%!important;top:calc(100% - 366px)!important;bottom:auto!important;width:760px!important;height:254px!important;transform:translateX(-50%) scale(.9)!important;transform-origin:center bottom!important;overflow:visible!important}
+#fixedCurrent{position:absolute;left:0;top:0;width:178px;height:254px;overflow:hidden;z-index:5;pointer-events:none}
+#fixedCurrent>img{position:absolute;left:0;top:0;width:760px;height:auto;max-width:none}
+#referenceCount{position:absolute;left:86px;top:108px;transform:translate(-50%,-50%);width:auto;height:auto;background:none!important;border:0!important;border-radius:0!important;color:#fff;font:1000 43px/1 Arial,"Microsoft YaHei",sans-serif;-webkit-text-stroke:4px #2e148e;paint-order:stroke fill;text-shadow:0 2px 0 #321895;z-index:8;white-space:nowrap}
+#exactTrackViewport{position:absolute;left:155px;right:0;top:0;height:254px;overflow:hidden;touch-action:none;cursor:grab;z-index:3}
+#compactRewardRail.exactRail{display:flex;width:max-content;height:254px;will-change:transform;transition:none}
+.rewardCycle{position:relative;flex:0 0 595px;width:595px;height:254px;overflow:hidden}
+.rewardCycle>img{position:absolute;left:-165px;top:0;width:760px;height:auto;max-width:none;pointer-events:none}
+.cycleLabels{position:absolute;inset:0}
+.cycleReward{position:absolute;top:143px;width:75px;height:50px;border:0;background:transparent;cursor:pointer;padding:0;color:#6c2707;font:900 23px/1 Arial,"Microsoft YaHei",sans-serif}
+.cycleReward span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);min-width:58px;padding:4px 6px;border-radius:18px;background:linear-gradient(#fffde7,#fff3ae);box-shadow:inset 0 0 0 2px #f1c239;white-space:nowrap}
+.rewardCycle:first-child .cycleReward span{background:transparent;box-shadow:none;color:transparent;text-shadow:none}
+.cycleReward.c0{left:48px}.cycleReward.c1{left:184px}.cycleReward.c2{left:320px}.cycleReward.c3{left:470px;width:90px}
+.cycleReward.ready{filter:drop-shadow(0 0 10px #fff275)}
+.cycleReward.claimed:after{content:"已领取";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-7deg);padding:2px 6px;border:2px solid #fff;border-radius:7px;background:#6747a8;color:#fff;font:900 14px/1.2 "Microsoft YaHei";white-space:nowrap}
+@media(max-width:800px){.hero #v56TrackWrap{top:calc(100% - 305px)!important;width:94vw!important;height:31.4vw!important;transform:translateX(-50%)!important}.hero #v56TrackWrap{--s:calc(94vw / 760)}#fixedCurrent,#exactTrackViewport,#compactRewardRail.exactRail,.rewardCycle{transform-origin:left top}#fixedCurrent{transform:scale(var(--s))}#exactTrackViewport{left:calc(155 * var(--s));right:0;height:calc(254 * var(--s))}#compactRewardRail.exactRail{transform-origin:left top}}
+</style>
 </body></html>
