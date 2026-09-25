@@ -1865,7 +1865,7 @@ body:has(#resultOverlay.show) #v56TrackWrap{
   right:auto!important;
   top:auto!important;
   bottom:134px!important;
-  width:min(760px,78vw)!important;
+  width:min(820px,82vw)!important;
   height:142px!important;
   transform:translateX(-50%)!important;
   overflow:visible!important;
@@ -1875,7 +1875,7 @@ body:has(#resultOverlay.show) #v56TrackWrap{
 }
 #v56TrackImg,#v56FixedHeart,#v56DragMask{display:none!important}
 #compactCurrent{
-  position:absolute;left:0;top:0;z-index:3;width:154px;height:142px;overflow:hidden;
+  position:absolute;left:0;top:0;z-index:3;width:205px;height:142px;overflow:hidden;
   background:url("assets/a5ce3f9834175655ddae.png") left center/853px 284px no-repeat;
   filter:drop-shadow(0 4px 7px rgba(53,22,116,.35));
 }
@@ -1886,7 +1886,7 @@ body:has(#resultOverlay.show) #v56TrackWrap{
   text-shadow:0 2px 0 #3b249d;
 }
 #compactRewardViewport{
-  position:absolute;left:134px;right:0;top:8px;height:126px;margin:0;overflow:hidden;
+  position:absolute;left:185px;right:0;top:8px;height:126px;margin:0;overflow:hidden;
   contain:layout paint;isolation:isolate;
   cursor:grab;touch-action:pan-y;outline:none;
   mask-image:linear-gradient(90deg,transparent 0,#000 4%,#000 96%,transparent 100%);
@@ -1946,15 +1946,16 @@ body:has(#resultOverlay.show) #v56TrackWrap{
    wrap.innerHTML='<div id="compactCurrent" aria-label="当前累抽"><span id="compactCurrentCount">0</span></div><div id="compactRewardViewport" tabindex="0" role="group" aria-label="累计祈愿奖励，可左右滑动"><div id="compactRewardRail"></div></div>';
    const view=document.getElementById('compactRewardViewport'),rail=document.getElementById('compactRewardRail');
    rail.innerHTML=values.map(v=>'<button class="compactReward '+(points.has(v)?'points':'skin')+'" data-value="'+v+'" aria-label="累计'+v+'抽奖励"><span class="compactRewardIcon"></span><span class="compactRewardValue">'+v+'</span></button>').join('');
-   let x=0,start=0,base=0,drag=false,pid=null;
+   let x=0,start=0,base=0,drag=false,moved=false,pid=null,tapButton=null;
    const minX=()=>Math.min(0,view.clientWidth-rail.scrollWidth);
    const paint=()=>{x=Math.max(minX(),Math.min(0,x));rail.style.transform='translate3d('+x+'px,0,0)'};
-   view.addEventListener('pointerdown',e=>{drag=true;pid=e.pointerId;start=e.clientX;base=x;view.setPointerCapture(pid);e.preventDefault()});
-   view.addEventListener('pointermove',e=>{if(!drag||e.pointerId!==pid)return;x=base+e.clientX-start;paint();e.preventDefault()});
-   const stop=()=>{drag=false;pid=null};view.addEventListener('pointerup',stop);view.addEventListener('pointercancel',stop);
+   view.addEventListener('pointerdown',e=>{drag=true;moved=false;pid=e.pointerId;start=e.clientX;base=x;tapButton=e.target.closest('.compactReward');view.setPointerCapture(pid)});
+   view.addEventListener('pointermove',e=>{if(!drag||e.pointerId!==pid)return;const dx=e.clientX-start;if(Math.abs(dx)>7)moved=true;x=base+dx;paint();if(moved)e.preventDefault()});
+   view.addEventListener('pointerup',e=>{if(!drag||e.pointerId!==pid)return;const b=tapButton,wasMoved=moved;drag=false;pid=null;tapButton=null;if(b&&!wasMoved){const v=+b.dataset.value;if(state.count>=v&&!state.claimed.includes(v))claimMilestone(v)}e.preventDefault()});
+   view.addEventListener('pointercancel',()=>{drag=false;pid=null;tapButton=null});
    view.addEventListener('wheel',e=>{x-=e.deltaY||e.deltaX;paint();e.preventDefault()},{passive:false});
    view.addEventListener('keydown',e=>{if(e.key==='ArrowRight')x-=110;else if(e.key==='ArrowLeft')x+=110;else if(e.key==='Home')x=0;else if(e.key==='End')x=minX();else return;paint();e.preventDefault()});
-   rail.addEventListener('click',e=>{const b=e.target.closest('.compactReward');if(!b||drag)return;const v=+b.dataset.value;if(state.count>=v&&!state.claimed.includes(v))claimMilestone(v)});
+   rail.addEventListener('keydown',e=>{if(e.key!=='Enter'&&e.key!==' ')return;const b=e.target.closest('.compactReward');if(!b)return;const v=+b.dataset.value;if(state.count>=v&&!state.claimed.includes(v))claimMilestone(v);e.preventDefault()});
    addEventListener('resize',paint);paint();
  }
  function sync(){
