@@ -1964,7 +1964,6 @@ body:has(#resultOverlay.show) #v56TrackWrap{
  }
  function sync(){
    build(); const wrap=document.getElementById('v56TrackWrap'),n=document.getElementById('compactCurrentCount');if(!n)return;
-   wrap.style.removeProperty('bottom');wrap.style.removeProperty('transform');
    n.textContent=String(state.count);
    document.querySelectorAll('.compactReward').forEach(b=>{const v=+b.dataset.value,got=state.claimed.includes(v);b.classList.toggle('claimed',got);b.classList.toggle('ready',state.count>=v&&!got);b.disabled=got||state.count<v});
  }
@@ -2035,8 +2034,9 @@ body:has(#resultOverlay.show) #v56TrackWrap{
    const hero=document.querySelector('.hero'),actions=document.querySelector('.hero .actions');
    if(!hero||!actions)return;
    const scale=0.72,heroRect=hero.getBoundingClientRect(),actionsRect=actions.getBoundingClientRect();
-   const cssTop=actionsRect.top-50-heroRect.top-254*scale;
-   wrap.style.setProperty('top',cssTop+'px','important');
+   const cssBottom=heroRect.bottom-(actionsRect.top-50)-(254-254*scale);
+   wrap.style.setProperty('top','auto','important');
+   wrap.style.setProperty('bottom',cssBottom+'px','important');
  }
  addEventListener('resize',()=>{paint();fitRail()});sync();setInterval(sync,160);paint();
  requestAnimationFrame(()=>requestAnimationFrame(fitRail));setTimeout(fitRail,250);setTimeout(fitRail,900);
