@@ -2032,10 +2032,13 @@ body:has(#resultOverlay.show) #v56TrackWrap{
  function fitRail(){
    const hero=document.querySelector('.hero'),actions=document.querySelector('.hero .actions');
    if(!hero||!actions)return;
-   const scale=0.72,heroRect=hero.getBoundingClientRect(),actionsRect=actions.getBoundingClientRect();
-   const cssTop=actionsRect.top-10-heroRect.top-254*scale;
    wrap.style.setProperty('bottom','auto','important');
-   wrap.style.setProperty('top',cssTop+'px','important');
+   const actionsRect=actions.getBoundingClientRect(),wrapRect=wrap.getBoundingClientRect();
+   const currentTop=parseFloat(getComputedStyle(wrap).top)||0;
+   const gap=actionsRect.top-wrapRect.bottom;
+   // Correct from the actual transformed visual bounds; CSS dimensions alone
+   // miss the scaled artwork and caused the rail to remain too high.
+   wrap.style.setProperty('top',(currentTop+gap-10)+'px','important');
  }
  addEventListener('resize',()=>{paint();fitRail()});sync();setInterval(sync,160);paint();
  requestAnimationFrame(()=>requestAnimationFrame(fitRail));setTimeout(fitRail,250);setTimeout(fitRail,900);
