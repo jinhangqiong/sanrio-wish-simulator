@@ -1,164 +1,587 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#160e2c"><title>三丽鸥家族珍品无双祈愿 · 本地模拟器</title>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>三丽鸥家族珍品无双祈愿 · 本地模拟器</title>
 <style>
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;font-family:"Microsoft YaHei",system-ui,sans-serif;background:#160e2c;color:#fff;overflow-x:hidden}
-body{position:relative}
-#bg4kStage{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:#160e2c}
-#bg4kSolo{position:absolute;inset:0;width:100vw;height:100vh;height:100dvh;object-fit:cover;object-position:center center;background:transparent;opacity:1}
-#app{position:relative;z-index:1;min-height:100vh;background:transparent}
-.titleBanner{position:absolute;top:1.2%;left:1.1%;width:min(42vw,820px);z-index:20;pointer-events:none}
-.titleBanner img{display:block;width:100%;height:auto;filter:drop-shadow(0 6px 18px rgba(255,220,120,.2))}
-.liveCoinPatch{position:absolute;z-index:9;left:auto;right:34.5vw;top:1.6vh;width:250px;height:83px;background:url("assets/94614c91e71ebccde036.webp") center/contain no-repeat;pointer-events:none;color:transparent;font-size:0}
-.liveCoinPatch #coin{position:absolute;left:57%;top:50%;transform:translate(-50%,-50%);min-width:92px;text-align:center;color:#fff3a3;font:1000 30px/1 "Microsoft YaHei",Arial,sans-serif;letter-spacing:.5px;text-shadow:0 2px 0 #b76512,0 0 3px #fff7c4,0 2px 6px #4b1964b3}
-.wishBanner{position:absolute;z-index:9;top:.8vh;right:1vw;width:min(34vw,650px);aspect-ratio:2048/682;background:url("assets/e33c97af49eb402f59e4.webp") center/contain no-repeat;pointer-events:none}
-.wishBanner .num{position:absolute;font-weight:1000;line-height:1;white-space:nowrap;pointer-events:none}
-#wishOwnedNum{left:37.2%;bottom:17.2%;transform:translateX(-50%);font-size:clamp(17px,1.38vw,26px);color:#fff;text-shadow:0 2px 0 #6d32b8d9,0 0 8px #ffffffbf,0 2px 8px #0007}
-#wishNeedNum{left:59.7%;bottom:17.2%;transform:translateX(-50%);font-size:clamp(17px,1.38vw,26px);color:#ffe642;text-shadow:0 2px 0 #813a05d9,0 0 8px #fff6a0eb,0 2px 8px #0007}
-.wishBanner.redeemable{background-image:url("assets/2bdf3b06b4da88eddb90.webp")}
-.wishBanner.redeemable #wishNeedNum{display:none!important}
-.wishBanner .bannerBtn{position:absolute;background:transparent;border:0;padding:0;cursor:pointer;pointer-events:auto}
-.wishBanner .bannerShopBtn{right:5.2%;top:5.2%;width:22.5%;height:63%}
-.wishBanner .bannerSkyBtn{left:55%;bottom:3.5%;width:40%;height:28%}
-.skyBannerSecondary{position:absolute;z-index:8;right:1vw;top:calc(.8vh + min(34vw,650px)*682/2048 + 10px);width:min(34vw,650px);aspect-ratio:2048/682;overflow:hidden;pointer-events:none}
-.skyBannerSecondary img{display:block;width:100%;height:100%;object-fit:contain}
+*{box-sizing:border-box}body{margin:0;font-family:"Microsoft YaHei",system-ui,sans-serif;background:#160e2c;color:#fff;overflow-x:hidden}
+#app{min-height:100vh;background:linear-gradient(#140b28aa,#d783e322),url("assets/d8217d9d96f35e55130a.jpg") center top/cover fixed no-repeat;position:relative}
+.hud{position:absolute;inset:0;pointer-events:none;z-index:5;font-weight:900;text-shadow:0 1px 5px #38205e}
+.hudCoin{position:absolute;top:5.1%;left:70.8%;width:11.8%;height:5.2%;display:flex;align-items:center;justify-content:center;font-size:clamp(15px,1.45vw,29px);color:#fff}
+.hudCoin .plus{position:absolute;right:4%;font-size:1.25em}
+.hudMask{position:absolute;z-index:4;background:#4a2e79cc;border-radius:18px;pointer-events:none}.coinMask{top:5.35%;left:70.7%;width:11.9%;height:4.7%}.scoreMask{top:4.15%;right:4.05%;width:15.5%;height:4.8%}
+.hudScore{position:absolute;top:4.3%;right:4.2%;width:15.3%;height:4.4%;display:flex;align-items:flex-end;justify-content:center;padding-bottom:.2%;font-size:clamp(13px,1.1vw,23px);color:#ffe98c}
+
+.nav{display:none!important}.titleBanner{position:absolute;top:1.2%;left:1.1%;width:min(42vw,820px);z-index:20;pointer-events:none}.titleBanner img{display:block;width:100%;height:auto;filter:drop-shadow(0 6px 18px rgba(255,220,120,.20))}@media(max-width:900px){.titleBanner{top:1.0%;left:1.5%;width:min(72vw,560px)}}
 .hero{height:100vh;min-height:650px;position:relative}
-.actions{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);display:flex;gap:48px;align-items:center;justify-content:center;z-index:45}
-.wishAction{display:block;position:relative;z-index:50;flex:0 0 auto;width:350px;height:122px;padding:0;border:0;background:transparent;cursor:pointer}
-.wishAction img{display:block;width:100%;height:100%;object-fit:contain}
-.wishAction:active{transform:scale(.97)}
-.wishAction:focus-visible{outline:3px solid #fff4b0;outline-offset:4px}
-.side{position:fixed;right:18px;bottom:22px;display:flex;flex-direction:column;gap:12px;z-index:4}
-.side button{border:1px solid #fff;border-radius:24px;background:#5d3a92e8;color:#fff;padding:12px 17px;font-weight:800;cursor:pointer}
-.panel{display:none;position:fixed;inset:0;background:#10081edb;z-index:10;padding:4vh 5vw;overflow:auto}
-.panel.show{display:block}
-.card{max-width:1180px;margin:auto;background:linear-gradient(160deg,#34205c,#704da8 60%,#b46ec2);border:2px solid #e8ddff;border-radius:26px;padding:24px;box-shadow:0 0 45px #dca7ff66}
-.head{display:flex;justify-content:space-between;align-items:center}
-.close{cursor:pointer;border:1px solid #fff;border-radius:50%;width:38px;height:38px;background:#6b4b99;color:#fff;font-size:20px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:20px}
-.item{background:linear-gradient(#765fd0,#f8eafa);color:#573a85;border:2px solid #f7f1ff;border-radius:18px;padding:15px;min-height:150px;text-align:center;box-shadow:inset 0 0 22px #fff8}
-.grid .item b{display:block;font-size:17px;margin:12px 0}
-.price{display:inline-block;background:#fff3b5;border-radius:18px;padding:7px 18px;color:#7a4d5c;font-weight:900}
-.buy{margin-top:9px;border:0;border-radius:16px;padding:7px 14px;background:#593a91;color:white;cursor:pointer}
-.rewardRealIcon{width:88px;height:88px;object-fit:contain;display:block;margin:0 auto 8px;filter:drop-shadow(0 3px 7px #4c22824d)}
-.rewardRealIcon.small{width:68px;height:68px}
-.history{max-height:55vh;overflow:auto}
-.row{display:grid;grid-template-columns:80px 1fr 140px;gap:12px;padding:10px;border-bottom:1px solid #ffffff33}
+.counter{position:absolute;left:50%;bottom:174px;transform:translateX(-50%);font-size:24px;font-weight:900;background:#4b2d86dd;border:2px solid #e9d5ff;border-radius:50%;width:92px;height:92px;display:grid;place-items:center;box-shadow:0 0 30px #f6c8ff}
+.actions{position:absolute;left:50%;bottom:80px;transform:translateX(-50%);display:flex;gap:55px}
+.draw{border:2px solid #fff1bd;border-radius:32px;padding:14px 34px;font-size:23px;font-weight:900;color:#5b347f;cursor:pointer;min-width:290px;box-shadow:0 0 22px #fff7}
+.draw.one{background:linear-gradient(135deg,#f9d7ff,#d8b4ff)}.draw.ten{background:linear-gradient(135deg,#fff7c8,#f2c76c)}
+.draw:active{transform:scale(.97)}
+.milestones{position:absolute;left:50%;bottom:15px;transform:translateX(-50%);display:flex;gap:8px;align-items:center}
+.ms{width:58px;height:46px;border-radius:18px;background:#51368a;border:1px solid #f4d9ff;text-align:center;padding-top:5px;font-weight:800}.ms.got{background:#72a66d}
+.side{position:fixed;right:18px;bottom:22px;display:flex;flex-direction:column;gap:12px;z-index:4}.side button{border:1px solid #fff;border-radius:24px;background:#5d3a92e8;color:#fff;padding:12px 17px;font-weight:800;cursor:pointer}
+.panel{display:none;position:fixed;inset:0;background:#10081edb;z-index:10;padding:4vh 5vw;overflow:auto}.panel.show{display:block}.card{max-width:1180px;margin:auto;background:linear-gradient(160deg,#34205c,#704da8 60%,#b46ec2);border:2px solid #e8ddff;border-radius:26px;padding:24px;box-shadow:0 0 45px #dca7ff66}
+.head{display:flex;justify-content:space-between;align-items:center}.close{cursor:pointer;border:1px solid #fff;border-radius:50%;width:38px;height:38px;background:#6b4b99;color:#fff;font-size:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:20px}.item{background:linear-gradient(#765fd0,#f8eafa);color:#573a85;border:2px solid #f7f1ff;border-radius:18px;padding:15px;min-height:150px;text-align:center;box-shadow:inset 0 0 22px #fff8}.item b{display:block;font-size:17px;margin:12px 0}.price{display:inline-block;background:#fff3b5;border-radius:18px;padding:7px 18px;color:#7a4d5c;font-weight:900}.buy{margin-top:9px;border:0;border-radius:16px;padding:7px 14px;background:#593a91;color:white;cursor:pointer}
+.resultBox{display:none;position:fixed;inset:0;background:#0e0718e8;z-index:20;align-items:center;justify-content:center}.resultBox.show{display:flex}.results{max-width:1100px;width:92%;text-align:center}.results h1{font-size:42px;text-shadow:0 0 20px #ffd4ff}.loot{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}.loot .item{animation:pop .45s both}@keyframes pop{from{opacity:0;transform:scale(.5) rotate(-5deg)}to{opacity:1;transform:scale(1)}}.rare{box-shadow:0 0 35px #ffe37d, inset 0 0 25px #fff!important;border-color:#fff2a6!important}
+.history{max-height:55vh;overflow:auto}.row{display:grid;grid-template-columns:80px 1fr 140px;gap:12px;padding:10px;border-bottom:1px solid #ffffff33}
 .note{font-size:13px;opacity:.8;margin-top:14px}
-.decompMask{position:fixed;inset:0;z-index:100000;display:none;align-items:center;justify-content:center;background:#0c041eb8;backdrop-filter:blur(5px)}
+@media(max-width:800px){.actions{gap:8px}.draw{min-width:0;font-size:17px;padding:12px 18px}.loot{grid-template-columns:repeat(2,1fr)}.hero{min-height:600px}.nav{left:8vw}}
+
+/* V12：用户截图真实奖励素材 */
+.rewardIcon.icon-points,.rewardIcon.icon-bond,.rewardIcon.icon-frag{
+  background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important;
+  border-radius:50%; overflow:hidden; transform:scale(1.18)!important;
+  box-shadow:0 0 18px rgba(203,190,255,.38); filter:saturate(1.10) contrast(1.04)!important;
+}
+.rewardIcon.icon-points{background-image:url("assets/327a77a9bb9f6cafeea4.webp")!important}
+.rewardIcon.icon-bond{background-image:url("assets/be5a32b85dfe3879dee1.webp")!important}
+.rewardIcon.icon-frag{background-image:url("assets/b4beaeb25fe83e7f55fa.webp")!important}
+
+
+/* V14：分解确认，仅由 dis() 调用，不拦截其它按钮 */
+.decompMask{position:fixed;inset:0;z-index:100000;display:none;align-items:center;justify-content:center;background:rgba(12,4,30,.72);backdrop-filter:blur(5px)}
 .decompMask.show{display:flex}
-.decompBox{width:min(540px,86vw);padding:30px 34px 26px;border:2px solid #fff;border-radius:28px;text-align:center;color:#fff;background:linear-gradient(180deg,#6750bb,#a36ed1 58%,#e6c5f6);box-shadow:0 0 35px #d9baff99,inset 0 0 22px #fff3}
+.decompBox{width:min(540px,86vw);padding:30px 34px 26px;border:2px solid #fff;border-radius:28px;text-align:center;color:#fff;
+background:linear-gradient(180deg,#6750bb,#a36ed1 58%,#e6c5f6);box-shadow:0 0 35px #d9baff99,inset 0 0 22px #fff3}
 .decompTitle{font-size:31px;font-weight:900;margin-bottom:16px;text-shadow:0 2px 10px #4a287f}
 .decompText{font-size:19px;line-height:1.7;font-weight:700}
 .decompToday{display:flex;align-items:center;justify-content:center;gap:9px;margin:18px 0;font-size:16px;cursor:pointer}
 .decompToday input{width:20px;height:20px;accent-color:#7044b4}
 .decompBtns{display:flex;justify-content:center;gap:18px}
 .decompBtns button{min-width:145px;padding:12px 22px;border-radius:26px;border:2px solid #fff8c9;font-size:18px;font-weight:900;cursor:pointer}
-#decompCancel{background:#6251b3;color:#fff}#decompOK{background:linear-gradient(#efc0ff,#cb7be7);color:#542c78}
-.resultBox{display:none;position:fixed;inset:0;z-index:200000;align-items:center;justify-content:center;background:rgba(8,2,20,.86);backdrop-filter:blur(2px)}
-.resultBox.show{display:flex}
-.results{position:relative;width:100%;height:92vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:3vh;text-align:center}
-.results h1{margin:0 0 1vh;font-size:clamp(30px,3vw,58px);color:#fff7cf;text-shadow:0 0 8px #fff,0 0 20px #ffd28d,0 2px 5px #70409d}
+#decompCancel{background:#6251b3;color:#fff} #decompOK{background:linear-gradient(#efc0ff,#cb7be7);color:#542c78}
+
+</style>
+
+<style id="v7-art-preserve">
+/* 彻底禁用旧版会挡住原图的 HUD */
+.hudMask,.coinMask,.scoreMask,.hudCoin,.hudScore,
+.shopNative,.bannerNative,.v6-coin,.v6-owned{display:none!important}
+
+/* 原图 0+ 所在位置：只擦掉很小的数字区域，不碰图标和底框 */
+
+.liveCoinPatch{
+ position:absolute!important;
+ z-index:9!important;
+ left:68.1%!important;
+ top:2.15%!important;
+ width:280px!important;
+ height:93px!important;
+ background:url("assets/94614c91e71ebccde036.webp") center/contain no-repeat!important;
+ border-radius:0!important;
+ pointer-events:none!important;
+ color:transparent!important;
+ text-shadow:none!important;
+ font-size:0!important;
+}
+
+/* 动态祈愿币数量：颜色与右侧“+”保持一致 */
+.liveCoinPatch #coin{
+ position:absolute!important;
+ left:57%!important;
+ top:50%!important;
+ transform:translate(-50%,-50%)!important;
+ display:block!important;
+ min-width:92px!important;
+ text-align:center!important;
+ color:#FFF3A3!important;
+ font-family:"Microsoft YaHei",Arial,sans-serif!important;
+ font-size:30px!important;
+ line-height:1!important;
+ font-weight:1000!important;
+ letter-spacing:.5px!important;
+ text-shadow:
+   0 2px 0 #B76512,
+   0 0 3px #FFF7C4,
+   0 2px 6px rgba(75,25,100,.70)!important;
+}
+
+
+/* 右上角天幕进度条：去掉原小“0”块，换成图1样式横幅 */
+.liveScorePatch{display:none!important}
+.wishBanner{
+ position:absolute;z-index:9;
+ top:1.15vh;right:.9vw;
+ width:min(52vw,1000px);
+ aspect-ratio:2048/682;
+ background:url("assets/e33c97af49eb402f59e4.webp") center/contain no-repeat;
+ pointer-events:none
+}
+.wishBanner .num{position:absolute;font-weight:1000;line-height:1;white-space:nowrap;pointer-events:none}
+#wishOwnedNum{
+ left:36.9%;bottom:8.7%;transform:translateX(-50%);
+ font-size:clamp(18px,1.8vw,36px);color:#fff;
+ text-shadow:0 2px 0 rgba(109,50,176,.85),0 0 8px rgba(255,255,255,.75),0 2px 8px rgba(0,0,0,.45)
+}
+#wishNeedNum{
+ left:61.2%;bottom:8.6%;transform:translateX(-50%);
+ font-size:clamp(18px,1.95vw,40px);color:#ffe642;
+ text-shadow:0 2px 0 rgba(129,58,5,.85),0 0 8px rgba(255,246,160,.92),0 2px 8px rgba(0,0,0,.45)
+}
+#wishRedeemNow{
+ position:absolute;left:60.8%;bottom:5.6%;transform:translateX(-50%);
+ min-width:31%;padding:.38em 1em .42em;
+ border-radius:999px;border:2px solid rgba(255,255,255,.78);
+ background:linear-gradient(90deg,rgba(110,60,220,.88),rgba(238,76,177,.90));
+ color:#fff;font-weight:1000;font-size:clamp(15px,1.35vw,29px);line-height:1;
+ text-align:center;text-shadow:0 2px 8px rgba(0,0,0,.38);display:none;pointer-events:none;
+ box-shadow:0 6px 18px rgba(50,18,96,.28)
+}
+.wishBanner .bannerBtn{position:absolute;background:transparent;border:0;padding:0;cursor:pointer;pointer-events:auto}
+.wishBanner .bannerShopBtn{right:5.2%;top:5.2%;width:22.5%;height:63%}
+.wishBanner .bannerSkyBtn{left:55%;bottom:3.5%;width:40%;height:28%}
+.skyBannerSecondary{position:absolute;z-index:8;pointer-events:none;display:block;overflow:hidden;visibility:visible}
+.skyBannerSecondary img{display:block;width:100%;height:100%;object-fit:contain}
+
+</style>
+
+
+<style id="v8-result-fan">
+.resultBox{background:rgba(8,2,20,.86)!important;backdrop-filter:blur(2px);}
+.results{max-width:1500px!important;width:96%!important;height:92vh;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:3vh}
+.results h1{margin:0 0 1vh!important;font-family:"Microsoft YaHei",sans-serif;font-size:clamp(34px,3vw,58px)!important;color:#fff7cf!important;text-shadow:0 0 8px #fff,0 0 20px #ffd28d,0 2px 5px #70409d!important}
 .results h1:before,.results h1:after{content:"♡ ─── ✧";font-size:.42em;color:#e6c8ff;margin:0 22px;vertical-align:middle}
- .loot{position:relative;width:100vw;height:405px;min-height:0;margin:0;perspective:1200px}
-.loot .item{position:absolute;left:50%;top:50%;width:218px;height:330px;min-height:0;padding:0;overflow:visible;border:0;border-radius:0;background:none;box-shadow:none;transform-origin:50% 100%;animation:cardPop .45s both}
-@keyframes cardPop{from{opacity:0}to{opacity:1}}
-.loot .item.rare{filter:drop-shadow(0 0 12px #ffe990)}
-.newFrame{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;z-index:1;pointer-events:none}
-.newReward{position:absolute;left:50%;top:43%;max-width:56%;max-height:31%;object-fit:contain;transform:translate(-50%,-50%);z-index:3;filter:drop-shadow(0 3px 4px #2d196d47);pointer-events:none}
-.rewardName{position:absolute;z-index:4;left:7%;right:7%;bottom:8.5%;margin:0;color:#573a85;font-weight:800;font-size:11px;line-height:1.12;text-align:center;white-space:normal}
-#loot.ten-pull .item:nth-child(1){transform:translate(-784px,-92px) rotate(-7deg)}
-#loot.ten-pull .item:nth-child(2){transform:translate(-634px,-112px) rotate(-5.5deg)}
-#loot.ten-pull .item:nth-child(3){transform:translate(-484px,-127px) rotate(-4deg)}
-#loot.ten-pull .item:nth-child(4){transform:translate(-334px,-137px) rotate(-2.5deg)}
-#loot.ten-pull .item:nth-child(5){transform:translate(-184px,-142px) rotate(-1deg)}
-#loot.ten-pull .item:nth-child(6){transform:translate(-34px,-142px) rotate(1deg)}
-#loot.ten-pull .item:nth-child(7){transform:translate(116px,-137px) rotate(2.5deg)}
-#loot.ten-pull .item:nth-child(8){transform:translate(266px,-127px) rotate(4deg)}
-#loot.ten-pull .item:nth-child(9){transform:translate(416px,-112px) rotate(5.5deg)}
-#loot.ten-pull .item:nth-child(10){transform:translate(566px,-92px) rotate(7deg)}
-.loot.single-pull{height:58vh;display:flex;align-items:center;justify-content:center}
-.loot.single-pull .item{position:relative;left:auto;top:auto;transform:none;width:218px;height:330px}
-.resultConfirm{flex:0 0 auto;width:300px;height:64px;margin-top:-4vh;border:3px solid #fff3a7;border-radius:35px;background:linear-gradient(90deg,#d79aec,#e9c5ff);color:#633e8f;font-size:24px;cursor:pointer}
-#rewardTrack{position:absolute;left:50%;top:0;width:760px;height:254px;transform:translateX(-50%) scale(var(--track-scale,.72));transform-origin:center top;overflow:visible;z-index:40;user-select:none}
-#fixedCurrent{position:absolute;left:0;top:31px;width:190px;height:254px;overflow:visible;z-index:5;pointer-events:none}
-#fixedCurrent>img{position:absolute;left:0;top:15px;width:190px;height:auto;max-width:none}
-#referenceCount{position:absolute;left:95px;top:78px;transform:translate(-50%,-50%);color:#fff;font:1000 43px/1 Arial,"Microsoft YaHei",sans-serif;-webkit-text-stroke:4px #2e148e;paint-order:stroke fill;text-shadow:0 2px 0 #321895;z-index:8;white-space:nowrap;pointer-events:none}
-#exactTrackViewport{position:absolute;left:155px;right:0;top:0;height:254px;overflow:hidden;touch-action:none;cursor:grab;z-index:3;outline:none}
-#exactTrackViewport:active{cursor:grabbing}
-#compactRewardRail.exactRail{position:absolute;left:0;top:0;height:254px;width:max-content;display:flex;will-change:transform;transition:none}
-.rewardCycle{position:relative;flex:0 0 595px;width:595px;height:254px;overflow:hidden;transform-origin:top left}
-.rewardCycle>img{position:absolute;left:-165px;top:0;width:760px;height:auto;max-width:none;pointer-events:none}
-.rewardCycle.cycle1>img,.rewardCycle.cycle2>img{left:0;top:27px;width:595px}
-.cycleLabels{position:absolute;inset:0}
-.cycleReward{position:absolute;top:72px;width:105px;height:125px;padding:0;border:0;background:transparent;color:transparent;cursor:pointer}
-.cycleReward.c0{left:48px}.cycleReward.c1{left:184px}.cycleReward.c2{left:320px}.cycleReward.c3{left:470px;width:90px}
-.rewardCycle.cycle1 .cycleReward.c0,.rewardCycle.cycle2 .cycleReward.c0{left:14px}
-.rewardCycle.cycle1 .cycleReward.c1,.rewardCycle.cycle2 .cycleReward.c1{left:156px}
-.rewardCycle.cycle1 .cycleReward.c2,.rewardCycle.cycle2 .cycleReward.c2{left:294px}
-.rewardCycle.cycle1 .cycleReward.c3,.rewardCycle.cycle2 .cycleReward.c3{left:438px;width:105px}
-.cycleReward.ready{filter:drop-shadow(0 0 10px #fff275)}
-.cycleReward.claimed:after{content:"已领取";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-7deg);padding:2px 6px;border:2px solid #fff;border-radius:7px;background:#6747a8;color:#fff;font:900 14px/1.2 "Microsoft YaHei";white-space:nowrap}
-@media(max-width:900px){
- .titleBanner{top:1%;left:1.5%;width:min(72vw,560px)}
- .liveCoinPatch{right:40vw;width:150px;height:50px}
- .wishBanner{right:.5vw;width:39vw}
- #wishOwnedNum,#wishNeedNum{font-size:clamp(9px,2.05vw,14px)}
- .skyBannerSecondary{right:.5vw;width:39vw;top:calc(.8vh + 39vw*682/2048 + 10px)}
- .hero{min-height:600px}
- .actions{width:96%;gap:8px}
- .wishAction{width:calc((100vw - 32px)/2);height:auto;aspect-ratio:350/122}
- .side{right:8px;top:calc(132px + env(safe-area-inset-top));bottom:auto;gap:7px}
- .side button{padding:8px 10px;font-size:12px;line-height:1.2;border-radius:16px}
- #referenceCount{font-size:5.2vw;-webkit-text-stroke:2px #2e148e}
+.loot{position:relative!important;display:block!important;width:min(92vw,1380px)!important;height:62vh!important;min-height:500px;perspective:1200px}
+.loot .item{position:absolute!important;left:50%;top:7%;width:190px;height:410px;border:3px solid #d9d9ff!important;border-radius:22px 22px 34px 34px!important;background:linear-gradient(180deg,#8395ec 0%,#9d9bea 42%,#f8e8ff 91%)!important;box-shadow:0 0 12px #fff9,inset 0 0 22px #ffffff55!important;color:#5b4a89!important;display:flex!important;flex-direction:column;align-items:center;justify-content:flex-start;padding:52px 13px 22px!important;transform-origin:50% 115%;overflow:visible}
+.loot .item:before{content:"♡";position:absolute;top:7px;left:50%;transform:translateX(-50%);font-size:28px;color:#f4eaff;text-shadow:0 0 7px #fff}
+.loot .item:after{content:"";position:absolute;inset:12px 9px auto;height:35px;border-top:2px solid #f5efff;border-radius:50%;opacity:.8}
+.rewardIcon{width:104px;height:104px;flex:0 0 104px;margin:24px auto 20px;background-image:url("assets/922c2b0a23c09eab9fa8.jpg");background-repeat:no-repeat;filter:contrast(1.08) saturate(1.18) drop-shadow(0 0 5px #fff8);transform:scale(1.12)}
+.icon-points{background-size:2474px 1728px;background-position:-455px -752px}
+.icon-bond{background-size:2474px 1728px;background-position:-1052px -650px}
+.icon-frag{background-size:2474px 1728px;background-position:-1950px -735px}
+.icon-skin{background-size:2474px 1728px;background-position:-1285px -645px}
+.rewardQty{position:absolute;top:153px;right:25px;color:#fff;font-weight:900;font-size:22px;text-shadow:0 2px 4px #302454,0 0 3px #000}
+.rewardName{margin-top:auto;margin-bottom:24px;font-size:18px;line-height:1.3;font-weight:900;text-align:center;color:#5e5489;text-shadow:0 1px #fff}
+.loot .rare{box-shadow:0 0 30px #ffe990,inset 0 0 25px #fff!important;border-color:#fff1a6!important}
+.resultConfirm{margin-top:-4vh!important;width:300px!important;height:64px!important;border-radius:35px!important;background:linear-gradient(90deg,#d79aec,#e9c5ff)!important;border:3px solid #fff3a7!important;color:#633e8f!important;font-size:24px!important}
+@media(max-width:900px){.loot{transform:scale(.78);transform-origin:top center;width:1200px!important}}
+</style>
+
+
+<style id="v9-ten-separate">
+/* 十连：10 张独立可见，不能叠成一张 */
+.results{width:100%!important;max-width:none!important}
+.loot{
+  width:96vw!important;
+  max-width:1680px!important;
+  height:62vh!important;
+  min-height:500px!important;
+  overflow:visible!important;
+  position:relative!important;
 }
-@media screen and (orientation:landscape) and (max-height:600px){
- html,body{height:100%;min-height:0;overflow:hidden}
- #app,.hero{height:100vh;height:100dvh;min-height:0;overflow:hidden}
- .titleBanner{top:2px;left:1vw;width:min(32vw,270px)}
- .liveCoinPatch{right:42vw;top:4px;width:min(150px,18vw);height:min(50px,12vh)}
- .wishBanner{top:2px;right:1vw;width:min(28vw,240px)}
- #skyBannerSecondary{top:calc(7px + min(28vw,240px)*682/2048);right:1vw;width:min(28vw,240px)}
- .hero .actions{bottom:calc(10px + env(safe-area-inset-bottom));gap:8px;width:96vw;justify-content:center}
- .hero .wishAction{width:min(350px,calc((100vw - 32px)/2));height:auto;aspect-ratio:350/122}
- .side{top:calc(14px + min(28vw,240px)*682/2048*2);right:1vw;left:auto;bottom:auto;display:flex;flex-direction:row;gap:4px}
- .side button{padding:5px 7px;font-size:clamp(8px,1.25vw,11px);line-height:1;white-space:nowrap}
+.loot .item{
+  width:clamp(118px,9.4vw,178px)!important;
+  height:clamp(330px,45vh,410px)!important;
+  padding:46px 8px 18px!important;
 }
-@media screen and (orientation:landscape) and (max-height:600px) and (max-width:1000px){
- .resultBox{padding:0;background:rgba(8,2,20,.45);backdrop-filter:none;-webkit-backdrop-filter:none}
- .results{width:100vw;height:100dvh;min-height:0;padding:0;justify-content:center}
- .results h1{position:absolute;top:2vh;left:0;right:0;margin:0;font-size:clamp(18px,5vh,30px)}
- #loot.ten-pull{position:absolute;left:50%;top:50%;width:1568px;height:405px;min-height:0;margin:0;transform:translate(-50%,-50%) scale(min(calc((100vw - 20px)/1568px),calc((100dvh - 92px)/440px)));transform-origin:center center}
- #loot.ten-pull .item:nth-child(1){transform:translate(-722px,-122px) rotate(-7deg) scale(.88)}
- #loot.ten-pull .item:nth-child(2){transform:translate(-561px,-132px) rotate(-5.5deg) scale(.88)}
- #loot.ten-pull .item:nth-child(3){transform:translate(-399px,-140px) rotate(-4deg) scale(.88)}
- #loot.ten-pull .item:nth-child(4){transform:translate(-237px,-145px) rotate(-2.5deg) scale(.88)}
- #loot.ten-pull .item:nth-child(5){transform:translate(-75px,-148px) rotate(-1deg) scale(.88)}
- #loot.ten-pull .item:nth-child(6){transform:translate(75px,-148px) rotate(1deg) scale(.88)}
- #loot.ten-pull .item:nth-child(7){transform:translate(237px,-145px) rotate(2.5deg) scale(.88)}
- #loot.ten-pull .item:nth-child(8){transform:translate(399px,-140px) rotate(4deg) scale(.88)}
- #loot.ten-pull .item:nth-child(9){transform:translate(561px,-132px) rotate(5.5deg) scale(.88)}
- #loot.ten-pull .item:nth-child(10){transform:translate(560px,-122px) rotate(7deg) scale(.88)}
- .loot.single-pull{height:58vh;display:flex;align-items:center;justify-content:center}
- .loot.single-pull .item{position:relative;left:auto;top:auto;transform:none;width:218px;height:330px}
- .resultConfirm{position:absolute;left:50%;bottom:2vh;transform:translateX(-50%);width:min(240px,48vw);height:clamp(38px,11vh,50px);margin:0;font-size:clamp(16px,4vh,21px)}
+.rewardIcon{
+  width:clamp(72px,6.5vw,104px)!important;
+  height:clamp(72px,6.5vw,104px)!important;
+  flex-basis:clamp(72px,6.5vw,104px)!important;
 }
-@media(max-width:800px){
- .loot.single-pull{height:70vh}
- .loot.single-pull .item{transform:scale(.78);transform-origin:center}
- .resultConfirm{width:min(260px,70vw);height:54px;font-size:20px;margin-top:0}
- .decompBox{padding:24px 18px}
- .decompTitle{font-size:25px}.decompText{font-size:16px}
- .decompBtns button{min-width:120px;padding:10px 14px;font-size:16px}
+.rewardName{font-size:clamp(13px,1.15vw,18px)!important}
+.rewardQty{font-size:clamp(16px,1.4vw,22px)!important}
+</style>
+
+
+<style id="v10-hard-separate">
+/* V10：十连使用独立网格槽位，不再用 transform 排卡 */
+.loot.ten-pull{
+  display:grid!important;
+  grid-template-columns:repeat(10,minmax(0,1fr))!important;
+  align-items:center!important;
+  gap:8px!important;
+  width:min(96vw,1700px)!important;
+  height:58vh!important;
+  min-height:470px!important;
+  padding:0 18px!important;
+  box-sizing:border-box!important;
+  perspective:none!important;
+}
+.loot.ten-pull .item{
+  position:relative!important;
+  left:auto!important;top:auto!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+  height:390px!important;
+  transform:none!important;
+  animation:none!important;
+  box-sizing:border-box!important;
+  padding:45px 7px 18px!important;
+}
+.loot.ten-pull .item:nth-child(1),
+.loot.ten-pull .item:nth-child(10){margin-top:90px!important}
+.loot.ten-pull .item:nth-child(2),
+.loot.ten-pull .item:nth-child(9){margin-top:55px!important}
+.loot.ten-pull .item:nth-child(3),
+.loot.ten-pull .item:nth-child(8){margin-top:28px!important}
+.loot.ten-pull .item:nth-child(4),
+.loot.ten-pull .item:nth-child(7){margin-top:10px!important}
+.loot.ten-pull .item:nth-child(5),
+.loot.ten-pull .item:nth-child(6){margin-top:0!important}
+.loot.ten-pull .rewardIcon{width:88px!important;height:88px!important;flex-basis:88px!important}
+.loot.ten-pull .rewardName{font-size:15px!important}
+.loot.ten-pull .rewardQty{top:140px!important;right:12px!important;font-size:18px!important}
+
+.loot.single-pull{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  width:100%!important;height:58vh!important;
+}
+.loot.single-pull .item{
+  position:relative!important;left:auto!important;top:auto!important;
+  transform:none!important;animation:none!important;
+}
+@media(max-width:1100px){
+ .loot.ten-pull{gap:4px!important;padding:0 6px!important}
+ .loot.ten-pull .item{height:350px!important;padding-left:3px!important;padding-right:3px!important}
+ .loot.ten-pull .rewardIcon{width:66px!important;height:66px!important;flex-basis:66px!important}
+ .loot.ten-pull .rewardName{font-size:12px!important}
 }
 </style>
-</head><body>
+
+
+<style id="rewardIconV15">
+.rewardRealIcon{width:88px;height:88px;object-fit:contain;display:block;margin:0 auto 8px;filter:drop-shadow(0 3px 7px rgba(76,34,132,.30));pointer-events:none}
+.rewardRealIcon.small{width:68px;height:68px}
+</style>
+
+<script id="skin-text-format-safe">
+function formatSkinRewardText(s){
+  s = String(s ?? "");
+  return s.replace(/^(伴生皮肤|勇者皮肤|史诗皮肤|传说皮肤)\s*(?=[（(])/,
+                   "$1<br>");
+}
+</script>
+<style id="skin-text-center-safe">
+.rewardName{
+  text-align:center !important;
+  white-space:normal !important;
+  line-height:1.18 !important;
+}
+</style>
+
+<style id="v38-actual-wide-short">
+/* 真正修改实际十连卡片：175×390 -> 205×340 */
+#loot.ten-pull{
+  height:420px!important;
+}
+#loot.ten-pull .item{
+  width:205px!important;
+  min-width:205px!important;
+  height:340px!important;
+}
+
+/* 10张仍紧凑完整：中心间距约150px，允许装饰边轻微交叠 */
+#loot.ten-pull .item:nth-child(1){transform:translate(-760px,-112px) rotate(-9deg)!important}
+#loot.ten-pull .item:nth-child(2){transform:translate(-610px,-135px) rotate(-7deg)!important}
+#loot.ten-pull .item:nth-child(3){transform:translate(-460px,-152px) rotate(-5deg)!important}
+#loot.ten-pull .item:nth-child(4){transform:translate(-310px,-164px) rotate(-3deg)!important}
+#loot.ten-pull .item:nth-child(5){transform:translate(-160px,-170px) rotate(-1deg)!important}
+#loot.ten-pull .item:nth-child(6){transform:translate(-10px,-170px) rotate(1deg)!important}
+#loot.ten-pull .item:nth-child(7){transform:translate(140px,-164px) rotate(3deg)!important}
+#loot.ten-pull .item:nth-child(8){transform:translate(290px,-152px) rotate(5deg)!important}
+#loot.ten-pull .item:nth-child(9){transform:translate(440px,-135px) rotate(7deg)!important}
+#loot.ten-pull .item:nth-child(10){transform:translate(590px,-112px) rotate(9deg)!important}
+
+/* 框随卡片真实比例变宽变矮 */
+#loot.ten-pull .newFrame{
+  left:-3%!important;top:-2%!important;
+  width:106%!important;height:104%!important;
+}
+/* 四叶草区域随高度上移一点 */
+#loot.ten-pull .newReward,
+#loot.ten-pull .item .v27Reward{
+  left:50%!important;top:42%!important;
+  max-width:62%!important;max-height:31%!important;
+  transform:translate(-50%,-50%)!important;
+}
+#loot.ten-pull .rewardName{
+  left:7%!important;right:7%!important;width:86%!important;
+  bottom:10%!important;font-size:11.5px!important;line-height:1.12!important;
+  text-align:center!important;
+}
+@media(max-width:1600px){
+  #loot.ten-pull{transform:scale(.84)!important;transform-origin:50% 50%!important}
+}
+@media(max-width:1400px){
+  #loot.ten-pull{transform:scale(.74)!important;transform-origin:50% 50%!important}
+}
+</style>
+
+<style id="v39-extra-wide-short">
+/* V39：在V38基础上继续明显加宽、压矮 */
+#loot.ten-pull{height:390px!important}
+#loot.ten-pull .item{
+  width:225px!important;
+  min-width:225px!important;
+  height:305px!important;
+}
+
+/* 10张重新收紧，避免加宽后超出屏幕 */
+#loot.ten-pull .item:nth-child(1){transform:translate(-735px,-92px) rotate(-8deg)!important}
+#loot.ten-pull .item:nth-child(2){transform:translate(-590px,-112px) rotate(-6deg)!important}
+#loot.ten-pull .item:nth-child(3){transform:translate(-445px,-127px) rotate(-4.5deg)!important}
+#loot.ten-pull .item:nth-child(4){transform:translate(-300px,-137px) rotate(-2.5deg)!important}
+#loot.ten-pull .item:nth-child(5){transform:translate(-155px,-142px) rotate(-1deg)!important}
+#loot.ten-pull .item:nth-child(6){transform:translate(-10px,-142px) rotate(1deg)!important}
+#loot.ten-pull .item:nth-child(7){transform:translate(135px,-137px) rotate(2.5deg)!important}
+#loot.ten-pull .item:nth-child(8){transform:translate(280px,-127px) rotate(4.5deg)!important}
+#loot.ten-pull .item:nth-child(9){transform:translate(425px,-112px) rotate(6deg)!important}
+#loot.ten-pull .item:nth-child(10){transform:translate(570px,-92px) rotate(8deg)!important}
+
+/* 奖励图标继续锁在四叶草中心 */
+#loot.ten-pull .newReward,
+#loot.ten-pull .item .v27Reward{
+  top:41%!important;
+  max-width:58%!important;
+  max-height:32%!important;
+}
+#loot.ten-pull .rewardName{
+  bottom:9%!important;
+  font-size:11px!important;
+}
+</style>
+
+<style id="v49-single-same-as-ten">
+.rewardName,.reward-name,.result-name,.single-result .rewardName,.single-result .reward-name{
+  white-space:normal!important;
+  text-align:center!important;
+  line-height:1.15!important;
+}
+.rewardName br,.reward-name br,.result-name br{display:block!important;}
+</style>
+
+
+<style id="v50-single-real-ten-card">
+/* 单抽真正使用十连同款图2卡框，而不是旧的圆角长条卡 */
+#loot.single-pull .item{
+  width:218px!important;
+  min-width:218px!important;
+  max-width:218px!important;
+  height:330px!important;
+  min-height:330px!important;
+  position:relative!important;
+  left:auto!important;top:auto!important;
+  transform:none!important;
+  padding:0!important;
+  background:none!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  overflow:visible!important;
+}
+#loot.single-pull .item.rare{box-shadow:none!important;border:0!important}
+#loot.single-pull .rewardIcon,#loot.single-pull .rewardQty{display:none!important}
+
+#loot.single-pull .newFrame{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;height:100%!important;
+  object-fit:fill!important;
+  z-index:1!important;
+  pointer-events:none!important;
+}
+#loot.single-pull .newReward{
+  position:absolute!important;
+  left:50%!important;top:43%!important;
+  width:auto!important;height:auto!important;
+  max-width:56%!important;max-height:31%!important;
+  transform:translate(-50%,-50%)!important;
+  object-fit:contain!important;
+  z-index:3!important;
+  filter:drop-shadow(0 3px 4px rgba(45,25,105,.28))!important;
+  pointer-events:none!important;
+}
+#loot.single-pull .rewardName{
+  position:absolute!important;
+  z-index:4!important;
+  left:7%!important;right:7%!important;width:86%!important;
+  bottom:8.5%!important;
+  margin:0!important;
+  color:#573a85!important;
+  font-weight:800!important;
+  font-size:11px!important;
+  line-height:1.12!important;
+  text-align:center!important;
+  white-space:normal!important;
+}
+#loot.single-pull .rewardName br{display:block!important}
+</style>
+
+
+<style id="v53-real-heart-counter">
+.hero .counter{
+  width:170px!important;height:145px!important;
+  border:0!important;border-radius:0!important;
+  background:url("assets/e1f10d752e44901d658e.webp") center/contain no-repeat!important;
+  box-shadow:none!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  position:absolute!important;overflow:visible!important;
+}
+.hero .counter #count{
+  position:absolute!important;left:50%!important;top:43%!important;
+  transform:translate(-50%,-50%)!important;
+  z-index:5!important;margin:0!important;
+  font-size:48px!important;line-height:1!important;font-weight:1000!important;
+  color:#fff!important;text-shadow:0 3px 0 #4c2ba8,0 0 4px #4c2ba8!important;
+}
+.hero .counter small{
+  display:none!important;
+}
+</style>
+
+
+<style id="BG4K_SINGLEFILE">
+/* 只覆盖原背景，不改任何前景元素 */
+html,body{background:#160e2c!important;}
+body{position:relative!important;overflow-x:hidden!important;}
+#bg4kStage{
+  position:fixed!important;inset:0!important;z-index:0!important;
+  overflow:hidden!important;pointer-events:none!important;
+  background:#160e2c!important;
+}
+#bg4kSolo{
+  position:absolute!important;top:0!important;left:0!important;
+  width:100vw!important;height:100vh!important;height:100dvh!important;
+  object-fit:cover!important;object-position:center center!important;
+  background:transparent!important;pointer-events:none!important;
+}
+#app{
+  position:relative!important;z-index:1!important;
+  background:none!important;background-image:none!important;background-color:transparent!important;
+}
+</style>
+
+
+<style id="BG_VIDEO_VISIBLE_FIX">
+#bg4kStage{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  background:#160e2c!important;
+}
+#bg4kSolo{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  width:100vw!important;
+  height:100vh!important;
+  object-fit:cover!important;
+  object-position:center center!important;
+  background:transparent!important;
+}
+</style>
+
+
+<style id="v70-top-horizontal-fix">
+/* 顶部横向排列：祈愿币条在左，天幕横幅在右 */
+.liveCoinPatch{
+  left:auto!important; right:34.5vw!important; top:1.6vh!important;
+  width:250px!important; height:83px!important;
+}
+.wishBanner{
+  position:absolute!important;
+  left:auto!important; right:1.0vw!important; top:.8vh!important;
+  width:min(34vw,650px)!important;
+  aspect-ratio:2048/682!important;
+  transform:none!important;
+}
+#wishOwnedNum{font-size:clamp(14px,1.15vw,24px)!important}
+#wishNeedNum{font-size:clamp(14px,1.25vw,26px)!important}
+#wishRedeemNow{font-size:clamp(12px,.95vw,20px)!important}
+@media(max-width:900px){
+ .liveCoinPatch{right:40vw!important;width:150px!important;height:50px!important}
+ .wishBanner{right:.5vw!important;width:39vw!important}
+ #wishOwnedNum,#wishNeedNum{font-size:12px!important}
+ #wishRedeemNow{font-size:10px!important}
+}
+</style>
+
+<style id="v72-redeem-text-swap">
+/* 998 分及以上：直接切换为已改字的横幅图片，不再额外盖一个新条 */
+.wishBanner.redeemable{
+  background:url("assets/9df131cc84583049f810.webp") center/contain no-repeat!important;
+}
+#wishRedeemNow{display:none!important;}
+</style>
+<style id="v73-redeem-seamless">
+.wishBanner.redeemable{
+  background:url("assets/2bdf3b06b4da88eddb90.webp") center/contain no-repeat !important;
+}
+.wishBanner.redeemable #wishNeedNum,
+.wishBanner.redeemable #wishRedeemNow{display:none !important;}
+</style>
+
+<style id="v74-number-position-fix">
+/* 数字与原图文字同一水平线：白色数字紧跟“拥有♪”，黄色数字紧跟“还差” */
+#wishOwnedNum{left:38.8%!important;bottom:14.6%!important;transform:translateX(-50%)!important;}
+#wishNeedNum{left:62.2%!important;bottom:14.6%!important;transform:translateX(-50%)!important;}
+@media(max-width:900px){
+ #wishOwnedNum{left:38.8%!important;bottom:14.6%!important;}
+ #wishNeedNum{left:62.2%!important;bottom:14.6%!important;}
+}
+</style>
+
+<style id="v75-number-compact-fix">
+/* 紧凑排版：拥有 0，还差 998 兑换天幕；两个动态数字都略向左、略向上 */
+#wishOwnedNum{left:37.2%!important;bottom:17.2%!important;transform:translateX(-50%)!important;}
+#wishNeedNum{left:59.7%!important;bottom:17.2%!important;transform:translateX(-50%)!important;}
+@media(max-width:900px){
+ #wishOwnedNum{left:37.2%!important;bottom:17.2%!important;}
+ #wishNeedNum{left:59.7%!important;bottom:17.2%!important;}
+}
+</style>
+
+<style id="v76-number-font-match">
+/* 动态数字字号与横幅原有“拥有 / 还差 / 兑换天幕”文字视觉字号一致 */
+#wishOwnedNum,#wishNeedNum{
+  font-size:clamp(21px,1.72vw,32px)!important;
+  font-weight:1000!important;
+  line-height:1!important;
+}
+@media(max-width:900px){
+  #wishOwnedNum,#wishNeedNum{font-size:clamp(10px,2.55vw,16px)!important;}
+}
+</style>
+
+<style id="v78-number-reference-size">
+/* 按确认预览图的比例：数字比“拥有/还差”略小，保持紧凑 */
+#wishOwnedNum,#wishNeedNum{
+  font-size:clamp(17px,1.38vw,26px)!important;
+  font-weight:1000!important;
+  line-height:1!important;
+}
+@media(max-width:900px){
+  #wishOwnedNum,#wishNeedNum{font-size:clamp(9px,2.05vw,14px)!important;}
+}
+</style>
+
+<style id="v79-neednum-left-fix">
+/* 998 再向左微调，拉开与“兑换天幕”的间距 */
+#wishNeedNum{left:59.7%!important;}
+@media(max-width:900px){#wishNeedNum{left:59.7%!important;}}
+</style>
+<style id="always-visible-layout">
+.wishAction{display:block;position:relative;z-index:50;flex:0 0 auto;width:350px;height:122px;padding:0;border:0;background:transparent;cursor:pointer}
+.wishAction img{display:block;width:100%;height:100%;object-fit:contain}
+.wishAction:active{transform:scale(.97)}
+.wishAction:focus-visible{outline:3px solid #fff4b0;outline-offset:4px}
+.skyBannerSecondary{visibility:visible;right:1vw;top:calc(.8vh + min(34vw,650px) * 682 / 2048 + 10px);width:min(34vw,650px);aspect-ratio:2048/682}
+@media(max-width:900px){.skyBannerSecondary{right:.5vw;width:39vw;top:calc(.8vh + 39vw * 682 / 2048 + 10px)}}
+@media(max-width:760px){.actions{width:96%;gap:8px;justify-content:center}.wishAction{width:calc((100vw - 32px)/2);height:auto;aspect-ratio:350/122}}
+</style></head>
+<body>
+
 <div id="bg4kStage" aria-hidden="true">
   <video id="bg4kSolo" autoplay muted loop playsinline webkit-playsinline x5-playsinline="true" x5-video-player-type="h5-page" x5-video-player-fullscreen="false" preload="auto">
     <source src="assets/56da0341070321a451b9.mp4" type="video/mp4">
   </video>
 </div>
-<script id="background-video-playback">
+<script id="BG4K_LOOP_SCRIPT">
 (function(){
   const v=document.getElementById('bg4kSolo');
   if(!v) return;
@@ -184,11 +607,13 @@ body{position:relative}
 
 
 
+<!-- V7：保留左侧祈愿币条，右侧改成图1样式动态天幕横幅 -->
 <div class="liveCoinPatch"><span id="coin">9999</span></div>
-<span id="score" hidden>0</span>
+<div class="liveScorePatch"><span id="score">0</span></div>
 <div class="wishBanner" id="wishBanner" aria-hidden="true">
   <span class="num" id="wishOwnedNum">0</span>
   <span class="num" id="wishNeedNum">998</span>
+  <span id="wishRedeemNow">当前可兑换天幕</span>
   <button class="bannerBtn bannerShopBtn" onclick="openPanel('shop')" aria-label="商城"></button>
   <button class="bannerBtn bannerSkyBtn" onclick="alert('云端奇旅全屏天幕')" aria-label="云端奇旅全屏天幕"></button>
 </div>
@@ -198,21 +623,18 @@ body{position:relative}
 <div class="titleBanner"><img alt="三丽鸥家族珍品无双祈愿" src="assets/00cb96cce39c225091fc.webp"></div>
 <section class="hero"><span id="count" style="display:none!important"></span>
  <div class="actions"><button class="wishAction" onclick="drawN(1)" aria-label="祈愿1次，消耗10祈愿币"><img src="assets/d949e92387b4dae3a684.webp" alt="祈愿1次 10"></button><button class="wishAction" onclick="drawN(10)" aria-label="祈愿10次，消耗100祈愿币"><img src="assets/9945bec38257ade6976d.webp" alt="祈愿10次 100"></button></div>
- <div id="rewardTrack" aria-label="累计祈愿奖励"></div>
- </section>
+ <div style="position:absolute;left:50%;bottom:66px;transform:translateX(-50%);font-size:14px;text-shadow:0 1px 5px #32175c">达到累计抽数后点击节点领取：5/10/25/45/50/65/85/90/105抽随机皮肤；40/80/120抽288积分</div>
+<div class="milestones" id="milestones"></div>
+</section>
 <div class="side"><button onclick="openPanel('shop')">兑换商店</button><button onclick="openPanel('box')">祈愿盒</button><button onclick="resetGame()">重置模拟</button></div>
 </div>
 
 <div class="panel" id="shop"><div class="card"><div class="head"><h1>兑换商店</h1><button class="close" onclick="closePanel('shop')">×</button></div><div>当前积分：<b id="shopScore">0</b></div><div class="grid" id="shopGrid"></div><div class="note">本地模拟器：不连接游戏账号，不产生真实消费或游戏道具。</div></div></div>
 <div class="panel" id="box"><div class="card"><div class="head"><h1>祈愿盒</h1><button class="close" onclick="closePanel('box')">×</button></div><div class="grid" id="boxGrid"></div></div></div>
 <div class="panel" id="history"><div class="card"><div class="head"><h1>抽奖记录</h1><button class="close" onclick="closePanel('history')">×</button></div><div class="history" id="hist"></div></div></div>
-<div class="resultBox" id="result"><div class="results"><h1>祈愿结果</h1><div class="loot" id="loot"></div><button class="draw one resultConfirm" onclick="closeResults()">确定</button></div></div>
+<div class="resultBox" id="result"><div class="results"><h1>祈愿结果</h1><div class="loot" id="loot"></div><button class="draw one resultConfirm" onclick="document.getElementById('result').classList.remove('show')">确定</button></div></div>
 
-
-<script>function formatSkinRewardText(value){
- const text=String(value??'');
- return text.replace(/^(伴生皮肤|勇者皮肤|史诗皮肤|传说皮肤)\s*(?=[（(])/, '$1<br>');
-}
+<script>
 const P=[
  {k:"gift",n:"随机三丽鸥家族礼",p:.001,rare:1},
  {k:"legend",n:"随机传说皮肤",p:.005,rare:1},
@@ -224,12 +646,14 @@ const P=[
 const state=JSON.parse(localStorage.getItem("sanrioWishSim")||'{"coin":9999,"score":0,"count":0,"owned":[],"box":[],"history":[],"claimed":[]}');
 const SKY_COST=998;
 // 兼容旧存档
-state.box=state.box||[]; state.owned=state.owned||[]; state.claimed=state.claimed||[]; state.history=state.history||[];
+state.box=state.box||[]; state.owned=state.owned||[];
 if(!localStorage.getItem("sanrioCoinBar9999Init")){
   state.coin=9999;
   localStorage.setItem("sanrioCoinBar9999Init","1");
   localStorage.setItem("sanrioWishSim",JSON.stringify(state));
 }
+const skinDis={传说皮肤:120,史诗皮肤:60,勇者皮肤:40,伴生皮肤:20};
+const milestone=[5,10,25,40,45,50,65,80,85,90,105,120];
 const shop=[
  ["孙尚香-云端乐园",1788],["云端奇旅天幕",998],["灵宝装扮随机礼包",398],
  ["云端乐园个性按键",38],["云端乐园回城特效",158],["云端乐园击败特效",158],
@@ -246,6 +670,7 @@ function updateWishBanner(){
    wishNeedNum.style.display=need>0?"block":"none";
  }
  if(window.wishBanner) wishBanner.classList.toggle("redeemable",need<=0);
+ if(window.wishRedeemNow) wishRedeemNow.style.display="none";
 }
 
 function save(){localStorage.setItem("sanrioWishSim",JSON.stringify(state));render()}
@@ -272,9 +697,10 @@ function one(){
 function drawN(n){
  if(state.coin<n*10){alert("祈愿币不足");return}
  state.coin-=n*10; let out=[];
- for(let i=0;i<n;i++){state.count++;let z=one();out.push(z);state.history.unshift({i:state.count,n:z.name,t:new Date().toLocaleTimeString()})}
+ for(let i=0;i<n;i++){state.count++;let z=one();out.push(z);state.history.unshift({i:state.count,n:z.name,t:new Date().toLocaleTimeString()});checkMilestone(state.count)}
  save();showResults(out)
 }
+function checkMilestone(c){ /* 达标仅解锁，等待玩家手动领取 */ }
 function claimMilestone(c){
  if(state.count<c||state.claimed.includes(c))return;
  state.claimed.push(c);
@@ -293,19 +719,26 @@ function claimMilestone(c){
  }
  save();
 }
-function showResults(items){
- const loot=document.getElementById("loot");
- loot.className="loot "+(items.length===10?"ten-pull":"single-pull");
- const icons={skin:"assets/dddfb6f3d85047c16bc6.webp",bond:"assets/5b546c973b9d7a93fbfd.webp",points:"assets/e602fd9653f8b4115563.webp",frag:"assets/b4beaeb25fe83e7f55fa.webp"};
- function kind(name){if(name.includes("积分"))return "points";if(name.includes("亲密度")||name.includes("小舟寄梦"))return "bond";if(name.includes("碎片"))return "frag";return "skin"}
- loot.innerHTML=items.map((item,i)=>{
-   const type=kind(item.name), reward=icons[type]||icons.skin;
-   return '<div class="item '+(item.rare?'rare':'')+'" data-slot="'+(i+1)+'"><img class="newFrame" src="assets/f9debfbb503ba9727dfe.webp" alt=""><img class="newReward" src="'+reward+'" alt=""><div class="rewardName">'+formatSkinRewardText(item.name)+'</div></div>';
+function showResults(a){
+ let e=document.getElementById("loot"),N=a.length;
+ function meta(name){
+   let m=name.match(/×\s*(\d+)/),q=m?m[1]:"";
+   if(name.includes("积分"))return["points",q||""];
+   if(name.includes("亲密度")||name.includes("小舟寄梦"))return["bond",q||"2"];
+   if(name.includes("碎片"))return["frag",q||"8"];
+   return["skin",q];
+ }
+ e.className="loot "+(N===10?"ten-pull":"single-pull");
+ e.innerHTML=a.map((x,i)=>{
+   let [k,q]=meta(x.name);
+   return `<div class="item ${x.rare?'rare':''}" data-slot="${i+1}">
+     <div class="rewardIcon icon-${k}"></div>
+     ${q?`<span class="rewardQty">${q}</span>`:""}
+     <div class="rewardName">${formatSkinRewardText(x.name)}</div>
+   </div>`;
  }).join("");
  document.getElementById("result").classList.add("show");
- document.getElementById("rewardTrack").hidden=true;
 }
-function closeResults(){document.getElementById("result").classList.remove("show");document.getElementById("rewardTrack").hidden=false;}
 function openPanel(id){document.getElementById(id).classList.add("show");render()} function closePanel(id){document.getElementById(id).classList.remove("show")}
 function buy(i){let x=shop[i];if(state.score<x[1])return alert("积分不足");state.score-=x[1];state.owned.push(x[0]);state.history.unshift({i:"商店",n:"兑换："+x[0],t:new Date().toLocaleTimeString()});save()}
 function decompDay(){return new Date().toLocaleDateString("sv-SE")}
@@ -328,8 +761,9 @@ function dis(i){
 function resetGame(){if(confirm("清空本地模拟数据并重新开始？")){localStorage.removeItem("sanrioWishSim");location.reload()}}
 function render(){
  coin.textContent=state.coin;score.textContent=state.score;count.textContent=state.count;shopScore.textContent=state.score;updateWishBanner();
+ milestones.innerHTML=milestone.map(x=>{let ready=state.count>=x&&!state.claimed.includes(x),got=state.claimed.includes(x);return `<div class="ms ${got?'got':''}" onclick="${ready?`claimMilestone(${x})`:''}" style="${ready?'cursor:pointer;box-shadow:0 0 18px #fff59d;background:#a77845':''}">${x}${ready?'<br><small>领取</small>':''}</div>`}).join("");
  shopGrid.innerHTML=shop.map((x,i)=>`<div class="item"><div style="font-size:38px">✦</div><b>${x[0]}</b><span class="price">♬ ${x[1]}</span><br><button class="buy" onclick="buy(${i})">兑换</button></div>`).join("");
- boxGrid.innerHTML=state.box.length?state.box.map((x,i)=>{const icon=x.type==="skin"?"assets/1c89539b3cbbb295b691.webp":x.name.includes("亲密度")?"assets/1af49c1d3dfc6c8b4890.webp":"assets/1c89539b3cbbb295b691.webp";return `<div class="item"><img class="rewardRealIcon small" src="${icon}" alt=""><b>${x.name}</b>${x.dis?`<div style="margin:8px 0;font-size:13px;opacity:.8">分解可获得 ${x.dis} 三丽鸥家族积分</div><button class="buy" onclick="dis(${i})">分解 +${x.dis}积分</button>`:""}</div>`}).join(""):"<p>祈愿盒暂时为空</p>";
+ boxGrid.innerHTML=state.box.length?state.box.map((x,i)=>`<div class="item"><div style="font-size:40px">${x.type==="skin"?"♡":"🎁"}</div><b>${x.name}</b>${x.dis?`<div style="margin:8px 0;font-size:13px;opacity:.8">分解可获得 ${x.dis} 三丽鸥家族积分</div><button class="buy" onclick="dis(${i})">分解 +${x.dis}积分</button>`:""}</div>`).join(""):"<p>祈愿盒暂时为空</p>";
  hist.innerHTML=state.history.length?state.history.map(x=>`<div class="row"><span>${x.i}</span><b>${x.n}</b><span>${x.t}</span></div>`).join(""):"暂无记录";
 }
 render();
@@ -341,9 +775,1254 @@ render();
   <label class="decompToday"><input id="decompToday" type="checkbox">今日不再提醒</label>
   <div class="decompBtns"><button id="decompCancel">取消</button><button id="decompOK">确定分解</button></div>
  </div>
+</div>
+
+
+<script id="rewardIconPatchV15">
+const REWARD_ICON={
+ skin:"assets/1c89539b3cbbb295b691.webp",
+ intimacy:"assets/1af49c1d3dfc6c8b4890.webp",
+ score:"assets/27dd04990c93319782d7.webp"
+};
+function rewardKind(t){
+ t=(t||"").replace(/\s/g,"");
+ if(t.includes("皮肤碎片")) return "skin";
+ if(t.includes("亲密度道具")||t.includes("小舟寄梦")) return "intimacy";
+ if(t.includes("三丽鸥家族积分")) return "score";
+ return "";
+}
+function patchRewardIcons(){
+ document.querySelectorAll("body *").forEach(el=>{
+   if(el.children.length>12 || el.dataset.rewardIconDone==="1") return;
+   let txt=el.innerText||"", kind=rewardKind(txt);
+   if(!kind) return;
+   let candidates=[...el.children].filter(c=>{
+     let s=(c.textContent||"").trim();
+     return s==="♡"||s==="♥"||s==="🎁"||s==="🎵"||s==="🎶"||s==="⛵"||s==="⛵️";
+   });
+   if(candidates.length){
+     let old=candidates[0], img=document.createElement("img");
+     img.src=REWARD_ICON[kind]; img.className="rewardRealIcon";
+     old.replaceWith(img); el.dataset.rewardIconDone="1";
+   }
+ });
+}
+const rewardObs=new MutationObserver(()=>requestAnimationFrame(patchRewardIcons));
+rewardObs.observe(document.body,{childList:true,subtree:true});
+window.addEventListener("load",patchRewardIcons);
+patchRewardIcons();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style id="clean-result-v23">
+/* 十张结果卡：完全取消原来的圆角卡、圆圈、旧奖励图 */
+#loot.ten-pull .item{
+ position:relative!important;background:none!important;border:0!important;border-radius:0!important;
+ box-shadow:none!important;padding:0!important;overflow:visible!important;min-height:0!important;
+}
+#loot.ten-pull .item.rare{box-shadow:none!important;border:0!important}
+#loot.ten-pull .rewardIcon,#loot.ten-pull .rewardQty{display:none!important}
+
+/* 图2就是整张新卡框 */
+#loot.ten-pull .newFrame{
+ position:absolute;inset:0;width:100%;height:100%;object-fit:fill;z-index:1;pointer-events:none;
+}
+/* 奖励只放在图2中央四叶草内 */
+#loot.ten-pull .newReward{
+ position:absolute;left:22%;top:29%;width:56%;height:28%;object-fit:contain;z-index:3;
+ filter:drop-shadow(0 3px 4px rgba(45,25,105,.28));pointer-events:none;
+}
+#loot.ten-pull .rewardName{
+ position:absolute!important;z-index:4!important;left:10%!important;right:10%!important;
+ bottom:10%!important;color:#573a85!important;font-weight:800!important;font-size:clamp(12px,1.05vw,18px)!important;
+ line-height:1.28!important;text-align:center!important;
+}
+#loot.ten-pull{align-items:end!important}
+</style>
+<script id="clean-result-v23-js">
+(function(){
+ const FRAME="assets/f9debfbb503ba9727dfe.webp", ICON={skin:"assets/dddfb6f3d85047c16bc6.webp",bond:"assets/5b546c973b9d7a93fbfd.webp",points:"assets/e602fd9653f8b4115563.webp",frag:"assets/dddfb6f3d85047c16bc6.webp"};
+ function patch(){
+   document.querySelectorAll("#loot.ten-pull > .item,#loot.single-pull > .item").forEach(c=>{
+     // 彻底删除原来图3那套圆圈/奖励显示
+     c.querySelectorAll(".newFrame,.newReward").forEach(x=>x.remove());
+     const old=c.querySelector(".rewardIcon");
+     const kind=[...old?.classList||[]].find(x=>x.startsWith("icon-"))?.replace("icon-","")||"points";
+     let fr=document.createElement("img"); fr.className="newFrame"; fr.src=FRAME; c.prepend(fr);
+     let rw=document.createElement("img"); rw.className="newReward"; rw.src=ICON[kind]||ICON.points; c.appendChild(rw);
+   });
+ }
+ const obs=new MutationObserver(()=>requestAnimationFrame(patch));
+ obs.observe(document.getElementById("loot"),{childList:true,subtree:true});
+ document.addEventListener("click",()=>setTimeout(patch,30),true);
+ patch();
+})();
+</script>
+
+<style id="wider-result-v24">
+/* 十连卡片加宽，同时保持10张一排 */
+#loot.ten-pull{
+  width:min(96vw,1780px)!important;
+  max-width:none!important;
+  gap:8px!important;
+  justify-content:center!important;
+}
+#loot.ten-pull .item{
+  width:clamp(135px,8.7vw,170px)!important;
+  min-width:135px!important;
+  flex:0 0 clamp(135px,8.7vw,170px)!important;
+}
+/* 新卡框略横向放宽，奖励仍锁定四叶草中央 */
+#loot.ten-pull .newFrame{
+  left:-5%!important;
+  width:110%!important;
+}
+#loot.ten-pull .newReward{
+  left:19%!important;
+  width:62%!important;
+}
+#loot.ten-pull .rewardName{
+  left:5%!important;
+  right:5%!important;
+  font-size:clamp(13px,1vw,18px)!important;
+}
+</style>
+
+<style id="wider-higher-v25">
+/* 卡片再加宽，并整体上移 */
+#loot.ten-pull{
+  width:min(98vw,1880px)!important;
+  max-width:none!important;
+  gap:4px!important;
+  transform:translateY(-42px)!important;
+}
+#loot.ten-pull .item{
+  width:clamp(145px,9.25vw,182px)!important;
+  min-width:145px!important;
+  flex:0 0 clamp(145px,9.25vw,182px)!important;
+}
+#loot.ten-pull .newFrame{
+  left:-7%!important;
+  width:114%!important;
+}
+/* 文字限制在各自卡片内，避免横向串到旁边 */
+#loot.ten-pull .rewardName{
+  left:9%!important;
+  right:9%!important;
+  width:auto!important;
+  font-size:clamp(12px,.9vw,17px)!important;
+  line-height:1.22!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+  text-align:center!important;
+}
+</style>
+
+<style id="clover-center-v26">
+/* 奖励图标严格居中到卡框中央的四叶草区域 */
+#loot.ten-pull .item .rewardIcon,
+#loot.ten-pull .item .reward-img,
+#loot.ten-pull .item img.reward,
+#loot.ten-pull .item .icon{
+  position:absolute!important;
+  left:50%!important;
+  top:48%!important;
+  transform:translate(-50%,-50%)!important;
+  margin:0!important;
+  object-position:center center!important;
+  z-index:5!important;
+}
+
+/* 若图标外层是奖励图片区，也一起锁到四叶草中心 */
+#loot.ten-pull .item .rewardVisual,
+#loot.ten-pull .item .reward-visual,
+#loot.ten-pull .item .iconWrap,
+#loot.ten-pull .item .icon-wrap{
+  position:absolute!important;
+  left:50%!important;
+  top:48%!important;
+  transform:translate(-50%,-50%)!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  margin:0!important;
+}
+
+/* 卡框保持上一版宽度和高度 */
+#loot.ten-pull{
+  transform:translateY(-42px)!important;
+}
+</style>
+
+<script>
+/* 根据实际卡片结构，将奖励图片本身居中到装饰框四叶草中心 */
+(function(){
+  function centerRewards(){
+    document.querySelectorAll('#loot.ten-pull .item').forEach(card=>{
+      const imgs=[...card.querySelectorAll('img')];
+      if(!imgs.length) return;
+
+      /* 排除整张卡框背景，取卡内面积较小的奖励图 */
+      const reward=imgs
+        .filter(im=>{
+          const r=im.getBoundingClientRect(), c=card.getBoundingClientRect();
+          return r.width < c.width*.90 && r.height < c.height*.55;
+        })
+        .sort((a,b)=>{
+          const ar=a.getBoundingClientRect(), br=b.getBoundingClientRect();
+          return (br.width*br.height)-(ar.width*ar.height);
+        })[0];
+
+      if(reward){
+        reward.style.position='absolute';
+        reward.style.left='50%';
+        reward.style.top='48%';
+        reward.style.transform='translate(-50%,-50%)';
+        reward.style.margin='0';
+        reward.style.zIndex='8';
+        reward.style.objectPosition='center center';
+      }
+    });
+  }
+  centerRewards();
+  new MutationObserver(()=>requestAnimationFrame(centerRewards))
+    .observe(document.getElementById('loot')||document.body,{childList:true,subtree:true});
+})();
+</script>
+
+<style id="v27-straight-wider">
+/* 十连：进一步加宽，并保持整齐 */
+#loot.ten-pull{
+  width:min(99vw,1960px)!important;
+  max-width:none!important;
+  gap:2px!important;
+  transform:translateY(-42px)!important;
+  align-items:center!important;
+}
+#loot.ten-pull .item{
+  width:clamp(158px,9.7vw,192px)!important;
+  min-width:158px!important;
+  flex:0 0 clamp(158px,9.7vw,192px)!important;
+  transform:none!important;
+  rotate:0deg!important;
+}
+#loot.ten-pull .newFrame{
+  left:-4%!important;
+  width:108%!important;
+  transform:none!important;
+}
+
+/* 奖励图：以每张卡自身为坐标，严格落在四叶草正中心 */
+#loot.ten-pull .item .v27Reward{
+  position:absolute!important;
+  left:50%!important;
+  top:46.5%!important;
+  transform:translate(-50%,-50%)!important;
+  margin:0!important;
+  z-index:9!important;
+  object-position:center!important;
+}
+
+/* 文字保持卡内居中 */
+#loot.ten-pull .rewardName{
+  left:7%!important; right:7%!important; width:auto!important;
+  text-align:center!important; white-space:normal!important;
+}
+</style>
 <script>
 (function(){
- const wrap=document.getElementById('rewardTrack');if(!wrap)return;
+ function fix(){
+   document.querySelectorAll('#loot.ten-pull .item').forEach(card=>{
+     const cr=card.getBoundingClientRect();
+     [...card.querySelectorAll('img')].forEach(im=>im.classList.remove('v27Reward'));
+     const candidates=[...card.querySelectorAll('img')].filter(im=>{
+       const r=im.getBoundingClientRect();
+       /* 排除覆盖整卡的装饰框，只选择奖励素材 */
+       return r.width>25 && r.height>25 && r.width<cr.width*.82 && r.height<cr.height*.48;
+     });
+     if(candidates.length){
+       candidates.sort((a,b)=>{
+         const A=a.getBoundingClientRect(),B=b.getBoundingClientRect();
+         return B.width*B.height-A.width*A.height;
+       });
+       candidates[0].classList.add('v27Reward');
+     }
+   });
+ }
+ fix();
+ new MutationObserver(()=>requestAnimationFrame(fix))
+   .observe(document.getElementById('loot')||document.body,{childList:true,subtree:true});
+})();
+</script>
+
+<style id="v28-fan-layout">
+/* 参考图：十张卡片做扇形排布，中央最高、两侧逐渐降低并倾斜 */
+#loot.ten-pull{
+  position:relative!important;
+  width:min(96vw,1680px)!important;
+  height:600px!important;
+  margin:0 auto!important;
+  display:block!important;
+  transform:translateY(-20px)!important;
+}
+#loot.ten-pull .item{
+  position:absolute!important;
+  top:50%!important;
+  left:50%!important;
+  width:158px!important;
+  min-width:158px!important;
+  height:500px!important;
+  margin:0!important;
+  transform-origin:50% 100%!important;
+}
+
+/* 从左到右：角度逐渐回正，再向右倾斜；中央最高 */
+#loot.ten-pull .item:nth-child(1){transform:translate(-790px,-205px) rotate(-17deg)!important}
+#loot.ten-pull .item:nth-child(2){transform:translate(-625px,-255px) rotate(-13deg)!important}
+#loot.ten-pull .item:nth-child(3){transform:translate(-465px,-292px) rotate(-9deg)!important}
+#loot.ten-pull .item:nth-child(4){transform:translate(-305px,-318px) rotate(-5deg)!important}
+#loot.ten-pull .item:nth-child(5){transform:translate(-150px,-330px) rotate(-2deg)!important}
+#loot.ten-pull .item:nth-child(6){transform:translate(10px,-330px) rotate(2deg)!important}
+#loot.ten-pull .item:nth-child(7){transform:translate(165px,-318px) rotate(5deg)!important}
+#loot.ten-pull .item:nth-child(8){transform:translate(325px,-292px) rotate(9deg)!important}
+#loot.ten-pull .item:nth-child(9){transform:translate(485px,-255px) rotate(13deg)!important}
+#loot.ten-pull .item:nth-child(10){transform:translate(650px,-205px) rotate(17deg)!important}
+
+/* 卡框完整铺满 */
+#loot.ten-pull .newFrame{
+  left:-5%!important; top:-3%!important;
+  width:110%!important; height:106%!important;
+  object-fit:fill!important;
+}
+
+/* 奖励固定在四叶草中央 */
+#loot.ten-pull .item .v27Reward{
+  left:50%!important; top:43%!important;
+  width:auto!important; max-width:76%!important; max-height:31%!important;
+  transform:translate(-50%,-50%)!important;
+}
+
+/* 参考图文字更小、更紧凑，避免跨卡 */
+#loot.ten-pull .rewardName{
+  position:absolute!important;
+  left:10%!important; right:10%!important;
+  bottom:12%!important;
+  width:80%!important;
+  font-size:14px!important;
+  line-height:1.18!important;
+  font-weight:700!important;
+  text-align:center!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+  z-index:12!important;
+}
+</style>
+
+<style id="v29-size-fix">
+/* 整组缩小一些，同时每张卡片再加宽 */
+#loot.ten-pull{
+  width:min(98vw,1740px)!important;
+  height:540px!important;
+  transform:translateY(5px) scale(.88)!important;
+  transform-origin:50% 50%!important;
+}
+#loot.ten-pull .item{
+  width:178px!important;
+  min-width:178px!important;
+  height:470px!important;
+}
+/* 缩小后重新拉开横向间距，保持扇形 */
+#loot.ten-pull .item:nth-child(1){transform:translate(-845px,-185px) rotate(-15deg)!important}
+#loot.ten-pull .item:nth-child(2){transform:translate(-665px,-225px) rotate(-11deg)!important}
+#loot.ten-pull .item:nth-child(3){transform:translate(-490px,-255px) rotate(-8deg)!important}
+#loot.ten-pull .item:nth-child(4){transform:translate(-315px,-275px) rotate(-4deg)!important}
+#loot.ten-pull .item:nth-child(5){transform:translate(-140px,-285px) rotate(-1.5deg)!important}
+#loot.ten-pull .item:nth-child(6){transform:translate(35px,-285px) rotate(1.5deg)!important}
+#loot.ten-pull .item:nth-child(7){transform:translate(210px,-275px) rotate(4deg)!important}
+#loot.ten-pull .item:nth-child(8){transform:translate(385px,-255px) rotate(8deg)!important}
+#loot.ten-pull .item:nth-child(9){transform:translate(560px,-225px) rotate(11deg)!important}
+#loot.ten-pull .item:nth-child(10){transform:translate(740px,-185px) rotate(15deg)!important}
+#loot.ten-pull .rewardName{
+  left:8%!important;right:8%!important;width:84%!important;
+  font-size:13px!important;line-height:1.16!important;
+}
+</style>
+
+<style id="v30-shorter-wider">
+/* 继续缩小整组；卡片明显变矮、变宽 */
+#loot.ten-pull{
+  width:min(98vw,1760px)!important;
+  height:500px!important;
+  transform:translateY(18px) scale(.82)!important;
+  transform-origin:50% 50%!important;
+}
+#loot.ten-pull .item{
+  width:205px!important;
+  min-width:205px!important;
+  height:420px!important;
+}
+/* 更宽后重新排扇形，避免互相压住 */
+#loot.ten-pull .item:nth-child(1){transform:translate(-900px,-145px) rotate(-14deg)!important}
+#loot.ten-pull .item:nth-child(2){transform:translate(-705px,-180px) rotate(-10deg)!important}
+#loot.ten-pull .item:nth-child(3){transform:translate(-510px,-205px) rotate(-7deg)!important}
+#loot.ten-pull .item:nth-child(4){transform:translate(-315px,-222px) rotate(-4deg)!important}
+#loot.ten-pull .item:nth-child(5){transform:translate(-120px,-230px) rotate(-1.3deg)!important}
+#loot.ten-pull .item:nth-child(6){transform:translate(75px,-230px) rotate(1.3deg)!important}
+#loot.ten-pull .item:nth-child(7){transform:translate(270px,-222px) rotate(4deg)!important}
+#loot.ten-pull .item:nth-child(8){transform:translate(465px,-205px) rotate(7deg)!important}
+#loot.ten-pull .item:nth-child(9){transform:translate(660px,-180px) rotate(10deg)!important}
+#loot.ten-pull .item:nth-child(10){transform:translate(855px,-145px) rotate(14deg)!important}
+
+/* 奖励跟随变矮后的四叶草中心 */
+#loot.ten-pull .item .v27Reward{
+  top:43%!important;
+  max-width:70%!important;
+  max-height:30%!important;
+}
+/* 文字更适合宽卡 */
+#loot.ten-pull .rewardName{
+  left:7%!important;right:7%!important;width:86%!important;
+  bottom:11%!important;font-size:13px!important;line-height:1.15!important;
+}
+</style>
+
+<style id="v31-all-ten-visible">
+/* 保持卡片矮宽，但把10张全部收进屏幕 */
+#loot.ten-pull{
+  width:100%!important;height:500px!important;
+  transform:translateY(18px) scale(.78)!important;
+  transform-origin:50% 50%!important;
+  overflow:visible!important;
+}
+#loot.ten-pull .item{
+  width:205px!important;min-width:205px!important;height:420px!important;
+}
+/* 总跨度从约1950px收回到约1740px，10张完整可见 */
+#loot.ten-pull .item:nth-child(1){transform:translate(-850px,-145px) rotate(-13deg)!important}
+#loot.ten-pull .item:nth-child(2){transform:translate(-665px,-180px) rotate(-10deg)!important}
+#loot.ten-pull .item:nth-child(3){transform:translate(-480px,-205px) rotate(-7deg)!important}
+#loot.ten-pull .item:nth-child(4){transform:translate(-295px,-222px) rotate(-4deg)!important}
+#loot.ten-pull .item:nth-child(5){transform:translate(-110px,-230px) rotate(-1.3deg)!important}
+#loot.ten-pull .item:nth-child(6){transform:translate(75px,-230px) rotate(1.3deg)!important}
+#loot.ten-pull .item:nth-child(7){transform:translate(260px,-222px) rotate(4deg)!important}
+#loot.ten-pull .item:nth-child(8){transform:translate(445px,-205px) rotate(7deg)!important}
+#loot.ten-pull .item:nth-child(9){transform:translate(630px,-180px) rotate(10deg)!important}
+#loot.ten-pull .item:nth-child(10){transform:translate(815px,-145px) rotate(13deg)!important}
+</style>
+
+<style id="v32-force-all10">
+/* 关键修复：之前 item 自身 translate 仍然会把两端推出视口。
+   这版缩小卡片本体，并把10张的总跨度严格控制在屏幕内。 */
+#loot.ten-pull{
+  width:100vw!important;
+  height:480px!important;
+  transform:none!important;
+  overflow:visible!important;
+  margin:0 calc(50% - 50vw)!important;
+}
+#loot.ten-pull .item{
+  width:180px!important;
+  min-width:180px!important;
+  height:390px!important;
+  top:50%!important;left:50%!important;
+  transform-origin:50% 100%!important;
+}
+
+/* 10张中心位置：-810 到 +810，总宽约1800px；1920屏幕完整显示 */
+#loot.ten-pull .item:nth-child(1){transform:translate(-855px,-145px) rotate(-11deg)!important}
+#loot.ten-pull .item:nth-child(2){transform:translate(-665px,-175px) rotate(-8deg)!important}
+#loot.ten-pull .item:nth-child(3){transform:translate(-475px,-198px) rotate(-6deg)!important}
+#loot.ten-pull .item:nth-child(4){transform:translate(-285px,-214px) rotate(-3.5deg)!important}
+#loot.ten-pull .item:nth-child(5){transform:translate(-95px,-222px) rotate(-1deg)!important}
+#loot.ten-pull .item:nth-child(6){transform:translate(95px,-222px) rotate(1deg)!important}
+#loot.ten-pull .item:nth-child(7){transform:translate(285px,-214px) rotate(3.5deg)!important}
+#loot.ten-pull .item:nth-child(8){transform:translate(475px,-198px) rotate(6deg)!important}
+#loot.ten-pull .item:nth-child(9){transform:translate(665px,-175px) rotate(8deg)!important}
+#loot.ten-pull .item:nth-child(10){transform:translate(855px,-145px) rotate(11deg)!important}
+
+#loot.ten-pull .item .v27Reward{
+  top:43%!important;max-width:68%!important;max-height:29%!important;
+}
+#loot.ten-pull .rewardName{
+  left:7%!important;right:7%!important;width:86%!important;
+  bottom:11%!important;font-size:12px!important;line-height:1.13!important;
+}
+
+/* 小屏幕也强制把十张一起缩进去 */
+@media(max-width:1500px){
+  #loot.ten-pull{transform:scale(.78)!important;transform-origin:50% 50%!important}
+}
+</style>
+
+<style id="v33-compact-real10">
+/* 真正紧凑：取消之前过大的横向位移，10张中心间距仅145px */
+#loot.ten-pull{
+  width:100%!important;
+  height:470px!important;
+  margin:0 auto!important;
+  transform:none!important;
+  overflow:visible!important;
+}
+#loot.ten-pull .item{
+  width:175px!important;
+  min-width:175px!important;
+  height:390px!important;
+  top:50%!important;
+  left:50%!important;
+  transform-origin:50% 100%!important;
+}
+
+/* 总中心跨度 1305px，连卡宽约1480px，1920窗口左右均有余量 */
+#loot.ten-pull .item:nth-child(1){transform:translate(-740px,-140px) rotate(-10deg)!important}
+#loot.ten-pull .item:nth-child(2){transform:translate(-595px,-168px) rotate(-7.5deg)!important}
+#loot.ten-pull .item:nth-child(3){transform:translate(-450px,-190px) rotate(-5.5deg)!important}
+#loot.ten-pull .item:nth-child(4){transform:translate(-305px,-205px) rotate(-3deg)!important}
+#loot.ten-pull .item:nth-child(5){transform:translate(-160px,-212px) rotate(-1deg)!important}
+#loot.ten-pull .item:nth-child(6){transform:translate(-15px,-212px) rotate(1deg)!important}
+#loot.ten-pull .item:nth-child(7){transform:translate(130px,-205px) rotate(3deg)!important}
+#loot.ten-pull .item:nth-child(8){transform:translate(275px,-190px) rotate(5.5deg)!important}
+#loot.ten-pull .item:nth-child(9){transform:translate(420px,-168px) rotate(7.5deg)!important}
+#loot.ten-pull .item:nth-child(10){transform:translate(565px,-140px) rotate(10deg)!important}
+
+/* 四叶草内奖励 */
+#loot.ten-pull .item .v27Reward{
+  left:50%!important;top:43%!important;
+  max-width:68%!important;max-height:29%!important;
+  transform:translate(-50%,-50%)!important;
+}
+#loot.ten-pull .rewardName{
+  left:6%!important;right:6%!important;width:88%!important;
+  bottom:11%!important;font-size:11.5px!important;line-height:1.12!important;
+}
+
+/* 1366~1600宽屏也完整容纳10张 */
+@media(max-width:1600px){
+  #loot.ten-pull{transform:scale(.88)!important;transform-origin:50% 50%!important}
+}
+@media(max-width:1400px){
+  #loot.ten-pull{transform:scale(.78)!important;transform-origin:50% 50%!important}
+}
+</style>
+
+<style id="v40-final-override">
+/* 最终覆盖：明显“更宽 + 更矮” */
+#loot.ten-pull{
+  width:100%!important;
+  height:360px!important;
+  margin:0 auto!important;
+  transform:none!important;
+  overflow:visible!important;
+}
+#loot.ten-pull .item{
+  width:245px!important;
+  min-width:245px!important;
+  max-width:245px!important;
+  height:285px!important;
+  min-height:285px!important;
+  flex:0 0 245px!important;
+  top:50%!important;
+  left:50%!important;
+  transform-origin:50% 100%!important;
+}
+
+/* 卡框本身跟着真正变宽、变矮 */
+#loot.ten-pull .newFrame{
+  inset:0!important;
+  left:0!important;
+  top:0!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:fill!important;
+}
+
+/* 10张保持紧凑扇形，允许轻微叠压 */
+#loot.ten-pull .item:nth-child(1){transform:translate(-820px,-72px) rotate(-8deg)!important}
+#loot.ten-pull .item:nth-child(2){transform:translate(-650px,-92px) rotate(-6deg)!important}
+#loot.ten-pull .item:nth-child(3){transform:translate(-480px,-107px) rotate(-4.5deg)!important}
+#loot.ten-pull .item:nth-child(4){transform:translate(-310px,-117px) rotate(-2.5deg)!important}
+#loot.ten-pull .item:nth-child(5){transform:translate(-140px,-122px) rotate(-1deg)!important}
+#loot.ten-pull .item:nth-child(6){transform:translate(30px,-122px) rotate(1deg)!important}
+#loot.ten-pull .item:nth-child(7){transform:translate(200px,-117px) rotate(2.5deg)!important}
+#loot.ten-pull .item:nth-child(8){transform:translate(370px,-107px) rotate(4.5deg)!important}
+#loot.ten-pull .item:nth-child(9){transform:translate(540px,-92px) rotate(6deg)!important}
+#loot.ten-pull .item:nth-child(10){transform:translate(710px,-72px) rotate(8deg)!important}
+
+/* 奖励仍居中于四叶草 */
+#loot.ten-pull .newReward{
+  left:50%!important;
+  top:43%!important;
+  width:auto!important;
+  height:auto!important;
+  max-width:54%!important;
+  max-height:31%!important;
+  transform:translate(-50%,-50%)!important;
+  object-fit:contain!important;
+}
+
+/* 文字居中 */
+#loot.ten-pull .rewardName{
+  left:8%!important;
+  right:8%!important;
+  width:84%!important;
+  bottom:9%!important;
+  font-size:11px!important;
+  line-height:1.12!important;
+  text-align:center!important;
+  white-space:normal!important;
+}
+
+/* 禁掉旧版本的整体缩放，否则视觉上宽高变化会被吃掉 */
+@media(max-width:1600px){
+  #loot.ten-pull{transform:scale(.88)!important;transform-origin:50% 50%!important}
+}
+@media(max-width:1400px){
+  #loot.ten-pull{transform:scale(.78)!important;transform-origin:50% 50%!important}
+}
+</style>
+
+
+<style id="v41-ten-visible-taller">
+#loot.ten-pull{
+  width:100vw!important;
+  max-width:none!important;
+  height:405px!important;
+  position:relative!important;
+  overflow:visible!important;
+  margin:0!important;
+}
+
+/* 稍微加高，但仍然是宽卡 */
+#loot.ten-pull .item{
+  width:218px!important;
+  min-width:218px!important;
+  max-width:218px!important;
+  height:330px!important;
+  min-height:330px!important;
+  flex:0 0 218px!important;
+  position:absolute!important;
+  left:50%!important;
+  top:50%!important;
+  transform-origin:50% 100%!important;
+}
+#loot.ten-pull .newFrame{
+  inset:0!important;width:100%!important;height:100%!important;
+  object-fit:fill!important;
+}
+
+/* 10 张中心间距 180px：总跨度约 1840px，1920 屏幕完整显示 */
+#loot.ten-pull .item:nth-child(1){transform:translate(-919px,-92px) rotate(-7deg)!important}
+#loot.ten-pull .item:nth-child(2){transform:translate(-739px,-112px) rotate(-5.5deg)!important}
+#loot.ten-pull .item:nth-child(3){transform:translate(-559px,-127px) rotate(-4deg)!important}
+#loot.ten-pull .item:nth-child(4){transform:translate(-379px,-137px) rotate(-2.5deg)!important}
+#loot.ten-pull .item:nth-child(5){transform:translate(-199px,-142px) rotate(-1deg)!important}
+#loot.ten-pull .item:nth-child(6){transform:translate(-19px,-142px) rotate(1deg)!important}
+#loot.ten-pull .item:nth-child(7){transform:translate(161px,-137px) rotate(2.5deg)!important}
+#loot.ten-pull .item:nth-child(8){transform:translate(341px,-127px) rotate(4deg)!important}
+#loot.ten-pull .item:nth-child(9){transform:translate(521px,-112px) rotate(5.5deg)!important}
+#loot.ten-pull .item:nth-child(10){transform:translate(701px,-92px) rotate(7deg)!important}
+
+#loot.ten-pull .newReward,
+#loot.ten-pull .v27Reward{
+  left:50%!important;top:43%!important;
+  width:auto!important;height:auto!important;
+  max-width:56%!important;max-height:31%!important;
+  transform:translate(-50%,-50%)!important;
+  object-fit:contain!important;
+}
+#loot.ten-pull .rewardName{
+  left:7%!important;right:7%!important;width:86%!important;
+  bottom:8.5%!important;
+  font-size:11px!important;line-height:1.12!important;
+  text-align:center!important;white-space:normal!important;
+}
+
+/* 关键：不要再用旧版 scale 把两侧卡片推到视口外 */
+@media(min-width:1601px){
+  #loot.ten-pull{transform:none!important}
+}
+</style>
+
+
+<style id="v42-compact-ten">
+#loot.ten-pull{
+  width:100vw!important;
+  max-width:none!important;
+  overflow:visible!important;
+}
+
+/* 保持上一版卡片 218×330，不再改变高宽 */
+#loot.ten-pull .item{
+  width:218px!important;
+  min-width:218px!important;
+  max-width:218px!important;
+  height:330px!important;
+  min-height:330px!important;
+  flex:0 0 218px!important;
+}
+
+/* 横向更紧凑：相邻中心约 166px */
+#loot.ten-pull .item:nth-child(1){transform:translate(-856px,-92px) rotate(-7deg)!important}
+#loot.ten-pull .item:nth-child(2){transform:translate(-690px,-112px) rotate(-5.5deg)!important}
+#loot.ten-pull .item:nth-child(3){transform:translate(-524px,-127px) rotate(-4deg)!important}
+#loot.ten-pull .item:nth-child(4){transform:translate(-358px,-137px) rotate(-2.5deg)!important}
+#loot.ten-pull .item:nth-child(5){transform:translate(-192px,-142px) rotate(-1deg)!important}
+#loot.ten-pull .item:nth-child(6){transform:translate(-26px,-142px) rotate(1deg)!important}
+#loot.ten-pull .item:nth-child(7){transform:translate(140px,-137px) rotate(2.5deg)!important}
+#loot.ten-pull .item:nth-child(8){transform:translate(306px,-127px) rotate(4deg)!important}
+#loot.ten-pull .item:nth-child(9){transform:translate(472px,-112px) rotate(5.5deg)!important}
+#loot.ten-pull .item:nth-child(10){transform:translate(638px,-92px) rotate(7deg)!important}
+</style>
+
+
+<style id="v43-more-compact-ten">
+/* 继续紧凑：中心间距 150px，10 张整体再收约 144px */
+#loot.ten-pull .item:nth-child(1){transform:translate(-784px,-92px) rotate(-7deg)!important}
+#loot.ten-pull .item:nth-child(2){transform:translate(-634px,-112px) rotate(-5.5deg)!important}
+#loot.ten-pull .item:nth-child(3){transform:translate(-484px,-127px) rotate(-4deg)!important}
+#loot.ten-pull .item:nth-child(4){transform:translate(-334px,-137px) rotate(-2.5deg)!important}
+#loot.ten-pull .item:nth-child(5){transform:translate(-184px,-142px) rotate(-1deg)!important}
+#loot.ten-pull .item:nth-child(6){transform:translate(-34px,-142px) rotate(1deg)!important}
+#loot.ten-pull .item:nth-child(7){transform:translate(116px,-137px) rotate(2.5deg)!important}
+#loot.ten-pull .item:nth-child(8){transform:translate(266px,-127px) rotate(4deg)!important}
+#loot.ten-pull .item:nth-child(9){transform:translate(416px,-112px) rotate(5.5deg)!important}
+#loot.ten-pull .item:nth-child(10){transform:translate(566px,-92px) rotate(7deg)!important}
+</style>
+
+
+<style id="v48-force-reward-linebreak">
+#loot.ten-pull .rewardName{
+  white-space:normal!important;
+  text-align:center!important;
+  line-height:1.15!important;
+}
+#loot.ten-pull .rewardName br{display:block!important;}
+</style>
+
+
+<script id="v49-unify-single-ten-skin-text">
+(function(){
+  function fixText(root=document){
+    root.querySelectorAll("*").forEach(el=>{
+      if(el.children.length) return;
+      let s=(el.textContent||"").trim();
+      if(!/(伴生皮肤|勇者皮肤|史诗皮肤|传说皮肤)/.test(s)) return;
+
+      let m=s.match(/^(伴生皮肤|勇者皮肤|史诗皮肤|传说皮肤)[\s\S]*?(?:转化|\+|可分解)\s*(20|40|60|120)\s*积分/);
+      if(m) el.innerHTML=m[1]+"<br>转化"+m[2]+"积分";
+    });
+  }
+  fixText();
+  new MutationObserver(()=>fixText()).observe(document.body,{childList:true,subtree:true,characterData:true});
+})();
+</script>
+
+
+<style id="v54-wish-real-buttons">
+.v54wishbtn{
+  background-color:transparent!important;background-repeat:no-repeat!important;
+  background-position:center!important;background-size:100% 100%!important;
+  border:0!important;box-shadow:none!important;color:transparent!important;
+  overflow:visible!important;
+}
+</style>
+
+
+
+<style id="v56-drag-progress">
+#v56TrackWrap{
+ position:absolute; left:50%; top:61.5%; transform:translateX(-50%);
+ width:min(980px,72vw); height:150px; z-index:35; overflow:hidden;
+ touch-action:pan-y; user-select:none;
+}
+#v56TrackImg{
+ position:absolute; left:0; top:0; height:150px; width:auto; max-width:none;
+ pointer-events:none; transform:translateX(0);
+}
+#v56FixedHeart{
+ position:absolute; left:0; top:0; width:205px; height:150px;
+ background-image:url("assets/a5ce3f9834175655ddae.webp"); background-size:auto 150px;
+ background-position:left top; background-repeat:no-repeat; z-index:3;
+ pointer-events:none;
+}
+#v56DragMask{position:absolute;left:190px;right:0;top:0;bottom:0;z-index:4;cursor:grab;touch-action:none}
+#v56DragMask:active{cursor:grabbing}
+</style>
+<script>
+(function(){
+ const IMG="assets/8fa01b2887c0d9e1155d.webp";
+ const vals=[5,10,25,40,45,50,65,80,90,105,120];
+ function init(){
+   if(document.getElementById('v56TrackWrap')) return;
+   const candidates=[...document.querySelectorAll('*')].filter(e=>{
+     const t=(e.innerText||'').replace(/\s+/g,'');
+     return t.includes('当前累抽') || t.includes('每抽40次可得');
+   });
+   let host=document.querySelector('.hero');
+   if(getComputedStyle(host).position==='static') host.style.position='relative';
+   const wrap=document.createElement('div'); wrap.id='v56TrackWrap';
+   wrap.innerHTML='<img id="v56TrackImg" src="'+IMG+'" alt="累计祈愿进度"><div id="v56FixedHeart"></div><div id="v56DragMask" role="slider" tabindex="0" aria-label="拖动查看累计祈愿节点" aria-valuemin="5" aria-valuemax="120" aria-valuenow="5"></div>';
+   host.appendChild(wrap);
+   const img=wrap.querySelector('#v56TrackImg'), mask=wrap.querySelector('#v56DragMask');
+   let x=0,start=0,base=0,drag=false;
+   const clamp=v=>Math.max(Math.min(v,0),Math.min(0,wrap.clientWidth-img.getBoundingClientRect().width));
+   const draw=()=>img.style.transform='translateX('+x+'px)';
+   const setAria=()=>{let p=-x/Math.max(1,img.getBoundingClientRect().width-wrap.clientWidth); let i=Math.round(p*(vals.length-1)); mask.setAttribute('aria-valuenow',vals[Math.max(0,Math.min(vals.length-1,i))]);};
+   mask.addEventListener('pointerdown',e=>{drag=true;start=e.clientX;base=x;mask.setPointerCapture(e.pointerId)});
+   mask.addEventListener('pointermove',e=>{if(!drag)return;x=clamp(base+e.clientX-start);draw();setAria()});
+   mask.addEventListener('pointerup',()=>drag=false); mask.addEventListener('pointercancel',()=>drag=false);
+   mask.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();
+     if(e.key==='Home')x=0; else if(e.key==='End')x=clamp(-99999); else x=clamp(x+(e.key==='ArrowRight'?-80:80)); draw();setAria();
+   });
+   img.onload=()=>{x=0;draw();setAria()};
+ }
+ init();
+})();
+</script>
+
+
+<style id="v57-fix">
+#v56TrackWrap{
+ position:absolute!important;left:50%!important;top:60%!important;
+ transform:translateX(-50%)!important;width:min(1000px,76vw)!important;
+ height:145px!important;z-index:35!important;overflow:hidden!important;
+ pointer-events:auto!important;touch-action:pan-y!important;
+}
+#v56TrackImg{pointer-events:none!important;height:145px!important;width:auto!important;max-width:none!important}
+#v56FixedHeart{pointer-events:none!important;height:145px!important;width:210px!important;background-size:auto 145px!important}
+#v56DragMask{
+ position:absolute!important;left:200px!important;right:0!important;top:0!important;bottom:0!important;
+ z-index:10!important;pointer-events:auto!important;cursor:grab!important;touch-action:none!important;
+}
+.v54wishbtn{pointer-events:auto!important;z-index:50!important;position:relative!important}
+</style>
+<script>
+(function(){
+ function repair(){
+   const wrap=document.getElementById('v56TrackWrap'), img=document.getElementById('v56TrackImg'),
+         mask=document.getElementById('v56DragMask');
+   if(!wrap||!img||!mask||mask.dataset.v57) return;
+   mask.dataset.v57='1';
+   let x=0, sx=0, bx=0, dragging=false, pid=null;
+   function minX(){ return Math.min(0, wrap.clientWidth-img.scrollWidth); }
+   function paint(){ x=Math.max(minX(),Math.min(0,x)); img.style.transform='translate3d('+x+'px,0,0)'; }
+   mask.addEventListener('pointerdown',function(e){
+     dragging=true; pid=e.pointerId; sx=e.clientX; bx=x;
+     try{mask.setPointerCapture(pid)}catch(_){}
+     e.preventDefault();
+   });
+   mask.addEventListener('pointermove',function(e){
+     if(!dragging||e.pointerId!==pid)return;
+     x=bx+(e.clientX-sx); paint(); e.preventDefault();
+   });
+   function stop(e){ if(!dragging)return; dragging=false; try{mask.releasePointerCapture(pid)}catch(_){} pid=null; }
+   mask.addEventListener('pointerup',stop); mask.addEventListener('pointercancel',stop);
+   mask.addEventListener('wheel',function(e){ x-=e.deltaY||e.deltaX; paint(); e.preventDefault(); },{passive:false});
+   mask.addEventListener('keydown',function(e){
+     if(e.key==='ArrowRight'){x-=100;paint();e.preventDefault()}
+     if(e.key==='ArrowLeft'){x+=100;paint();e.preventDefault()}
+     if(e.key==='Home'){x=0;paint();e.preventDefault()}
+     if(e.key==='End'){x=minX();paint();e.preventDefault()}
+   });
+   img.addEventListener('load',paint); paint();
+ }
+ repair();
+})();
+</script>
+
+
+<style id="v60-real-counter">
+/* 中间旧累计心彻底删除 */
+.hero .counter{display:none!important}
+
+/* 数字直接写在左侧原来的爱心内部：没有新框、没有新底 */
+#v56FixedHeart{position:absolute!important}
+#v60Count{
+ position:absolute!important;
+ left:56px!important; top:65px!important;
+ transform:translate(-50%,-50%)!important;
+ z-index:20!important;
+ min-width:0!important;width:auto!important;height:auto!important;
+ padding:0!important;margin:0!important;border:0!important;
+ background:none!important;border-radius:0!important;box-shadow:none!important;
+ color:#fff!important;
+ font-family:Arial,"Microsoft YaHei",sans-serif!important;
+ font-size:32px!important;font-weight:1000!important;line-height:1!important;
+ -webkit-text-stroke:2.2px #3b249d;
+ paint-order:stroke fill;
+ text-shadow:0 2px 0 #3b249d!important;
+ pointer-events:none!important;
+ white-space:nowrap!important;
+}
+</style>
+<script id="v60-real-counter-js">
+(function(){
+ function mount(){
+   const heart=document.getElementById('v56FixedHeart');
+   if(!heart)return;
+   let el=document.getElementById('v60Count');
+   if(!el){el=document.createElement('span');el.id='v60Count';heart.appendChild(el)}
+   el.textContent=String(state.count);
+ }
+ mount();setInterval(mount,80);
+})();
+</script>
+
+
+<style id="v62-layout-clean">
+/* 累抽条：放在两个祈愿按钮上方正中；左端与左侧祈愿按钮对齐 */
+#v56TrackWrap{
+  position:absolute!important;
+  width:900px!important;
+  height:150px!important;
+  left:calc(50% - 450px)!important;
+  top:auto!important;
+  bottom:166px!important;
+  transform:none!important;
+  transform-origin:initial!important;
+  z-index:30!important;
+  overflow:visible!important;
+}
+
+/* 防止上一版任何复制/缩放造成视觉重影 */
+#v56TrackWrap::before,#v56TrackWrap::after{content:none!important}
+#v56FixedHeart{transform:none!important}
+
+/* 保持祈愿按钮在累抽条正下方 */
+</style>
+
+
+<style id="v63-result-hide-progress">
+/* 出结果弹窗时，累计抽进度条完全隐藏，避免挡住十连/单抽结果卡片 */
+body:has(.result-modal.show) #v56TrackWrap,
+body:has(.result-overlay.show) #v56TrackWrap,
+body:has(.result-panel.show) #v56TrackWrap,
+body:has(#resultModal.show) #v56TrackWrap,
+body:has(#resultOverlay.show) #v56TrackWrap{
+  display:none!important;
+}
+</style>
+<script id="v63-result-hide-progress-js">
+(function(){
+ const track=()=>document.getElementById('v56TrackWrap');
+ function sync(){
+   const t=track(); if(!t)return;
+   /* 直接依据祈愿结果界面：标题“祈愿结果”或确定按钮可见时隐藏 */
+   const els=[...document.querySelectorAll('body *')];
+   const resultVisible=els.some(e=>{
+     const txt=(e.textContent||'').trim();
+     if(txt!=='祈愿结果' && txt!=='确定') return false;
+     const s=getComputedStyle(e),r=e.getBoundingClientRect();
+     return s.display!=='none' && s.visibility!=='hidden' && +s.opacity!==0 &&
+            r.width>0 && r.height>0;
+   });
+   const display=resultVisible?'none':'block'; if(t.style.display!==display)t.style.setProperty('display',display,'important');
+ }
+ new MutationObserver(sync).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class','style']});
+ document.addEventListener('click',()=>setTimeout(sync,20),true);
+ setInterval(sync,120);
+ sync();
+})();
+</script>
+
+
+<!-- V66：累计抽条严格以两个祈愿按钮组的中心为基准，放到按钮正上方 -->
+<style id="v66-true-center-track">
+.hero #v56TrackWrap{
+  position:absolute!important;
+  left:50%!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:190px!important;
+  width:900px!important;
+  height:150px!important;
+  transform:translateX(-50%)!important;
+  transform-origin:center center!important;
+  margin:0!important;
+  z-index:30!important;
+  overflow:visible!important;
+}
+.hero #v56TrackImg{height:150px!important;width:auto!important;max-width:none!important;}
+.hero #v56FixedHeart{height:150px!important;width:210px!important;background-size:auto 150px!important;}
+</style>
+<script id="v66-true-center-track-js">
+(function(){
+  function centerTrack(){
+    const hero=document.querySelector('.hero'), track=document.getElementById('v56TrackWrap');
+    if(!hero||!track)return;
+    /* 关键：进度条必须和祈愿按钮处于同一个 .hero 坐标系 */
+    if(track.parentElement!==hero) hero.appendChild(track);
+    track.style.setProperty('left','50%','important');
+    track.style.setProperty('right','auto','important');
+    /* Keep final rail placement and scale; older center script must not reset them. */
+  }
+  centerTrack();
+  new MutationObserver(centerTrack).observe(document.documentElement,{subtree:true,childList:true});
+})();
+</script>
+
+
+<style id="v67-center-visible-track-art">
+/* 外层容器继续和两个祈愿按钮共用 50% 中心 */
+.hero #v56TrackWrap{
+  position:absolute!important;
+  left:50%!important;
+  right:auto!important;
+  bottom:190px!important;
+  top:auto!important;
+  width:900px!important;
+  height:185px!important;
+  transform:translateX(-50%)!important;
+  overflow:visible!important;
+}
+
+/* 真正的问题在这里：
+   原图 2048×682；185px 高时可见宽约 555.43px。
+   不再 left:0，而是把“图片本身”居中到 900px 容器里。 */
+.hero #v56TrackImg{
+  position:absolute!important;
+  left:calc(50% - 277.715px)!important;
+  top:0!important;
+  height:185px!important;
+  width:auto!important;
+  max-width:none!important;
+}
+
+/* 固定左心也必须和图片左边缘一起移动，否则会出现重影/错位 */
+.hero #v56FixedHeart{
+  position:absolute!important;
+  left:calc(50% - 277.715px)!important;
+  top:0!important;
+  width:260px!important;
+  height:185px!important;
+  background-size:auto 185px!important;
+  background-position:left top!important;
+}
+
+/* 放大以后重新校正“当前累抽”数字 */
+.hero #v60Count{
+  left:69px!important;
+  top:80px!important;
+  font-size:39px!important;
+}
+
+/* 拖动层覆盖可见素材区域 */
+.hero #v56DragMask{
+  left:calc(50% - 277.715px + 235px)!important;
+  width:320px!important;
+  right:auto!important;
+  top:0!important;
+  bottom:0!important;
+}
+</style>
+
+
+<script>
+(function(){
+  function placeSecondaryBanner(){
+    var main=document.getElementById('wishBanner');
+    var sub=document.getElementById('skyBannerSecondary');
+    if(!main||!sub) return;
+    var mainW=main.offsetWidth||0;
+    var mainH=main.offsetHeight||0;
+    if(!mainW||!mainH) return;
+    var gap=10;
+    sub.style.width=mainW+'px';
+    sub.style.height=mainH+'px';
+    sub.style.left=main.offsetLeft+'px';
+    sub.style.top=(main.offsetTop + mainH + gap)+'px';
+    sub.style.visibility='visible';
+  }
+  placeSecondaryBanner();
+  window.addEventListener('resize',placeSecondaryBanner);
+})();
+</script>
+<style id="v85-reference-layout">
+/* 图3式底部布局：固定当前累抽，右侧奖励横向滑动 */
+.hero>.milestones,
+.hero>div[style*="bottom:66px"]{display:none!important}
+.hero .actions{
+  bottom:24px!important;
+  gap:48px!important;
+  z-index:45!important;
+}
+.hero .wishAction{width:350px!important;height:122px!important}
+.hero #v56TrackWrap{
+  display:block!important;
+  left:50%!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:128px!important;
+  width:min(690px,90vw)!important;
+  height:150px!important;
+  transform:translateX(-50%) scale(.86)!important;
+  transform-origin:center bottom!important;
+  overflow:visible!important;
+  z-index:40!important;
+  user-select:none!important;
+  background:none!important;
+}
+.hero #v56TrackWrap:before{
+  content:""!important;position:absolute;left:138px;right:14px;top:61px;height:14px;
+  border-radius:10px;background:linear-gradient(#a878ff,#41228e 45%,#2d176d 55%,#8959ea);
+  box-shadow:0 0 7px #d9c2ff;z-index:0;
+}
+#v56TrackImg,#v56FixedHeart,#v56DragMask{display:none!important}
+#compactCurrent{
+  position:absolute;left:0;top:0;z-index:3;width:184px;height:150px;overflow:hidden;
+  background:url("assets/a5ce3f9834175655ddae.webp") left center/700px 233px no-repeat;
+  filter:drop-shadow(0 4px 7px rgba(53,22,116,.35));
+}
+#compactCurrentCount{
+  position:absolute;left:88px;top:58px;transform:translate(-50%,-50%);
+  color:#fff;font:1000 34px/1 Arial,"Microsoft YaHei",sans-serif;
+  -webkit-text-stroke:2px #3b249d;paint-order:stroke fill;
+  text-shadow:0 2px 0 #3b249d;
+}
+#compactRewardViewport{
+  position:absolute;left:170px;right:0;top:3px;height:144px;margin:0;overflow:hidden;
+  contain:layout paint;isolation:isolate;
+  cursor:grab;touch-action:pan-y;outline:none;
+  mask-image:none;-webkit-mask-image:none;
+}
+#compactRewardViewport:active{cursor:grabbing}
+#compactRewardRail{
+  position:absolute;left:0;top:0;height:144px;display:flex;align-items:center;
+  flex-flow:row nowrap!important;width:max-content!important;
+  gap:22px;padding:0 38px 0 18px;will-change:transform;
+}
+#compactRewardRail:before{
+  content:none!important;
+}
+.compactReward{
+  position:relative;display:block;flex:0 0 96px!important;width:96px!important;height:140px!important;padding:0;border:0;
+  background:transparent;color:#683313;cursor:pointer;
+}
+.compactRewardIcon{
+  position:absolute;left:3px;top:6px;width:90px;height:78px;overflow:hidden;
+  background:url("assets/a5ce3f9834175655ddae.webp") -190px -54px/700px 233px no-repeat;
+  filter:drop-shadow(0 2px 5px rgba(44,21,105,.35));
+}
+.compactReward.points .compactRewardIcon{
+  width:148px;height:120px;left:-10px;top:-3px;
+  background-size:700px 233px;background-position:right -39px;
+}
+.compactReward.points{flex-basis:128px!important;width:128px!important}
+.compactReward.points .compactRewardValue{bottom:13px;min-width:72px}
+.compactRewardValue{
+  position:absolute;left:50%;bottom:3px;transform:translateX(-50%);z-index:4;
+  min-width:62px;padding:3px 11px 4px;border-radius:999px;
+  border:2px solid #efb63d;background:linear-gradient(#fffef0,#fff0a0);
+  color:#67310e;font:1000 20px/1 "Microsoft YaHei",sans-serif;
+  box-shadow:inset 0 1px 2px #fff,0 2px 4px #5d287955;
+}
+.compactReward.ready{animation:rewardGlow 1.15s ease-in-out infinite alternate}
+.compactReward.claimed{filter:saturate(.35);opacity:.72}
+.compactReward.claimed:after{content:"已领取";position:absolute;left:50%;top:42px;transform:translateX(-50%) rotate(-8deg);padding:2px 6px;border:2px solid #fff;border-radius:7px;background:#6747a8;color:#fff;font-weight:900;white-space:nowrap}
+@keyframes rewardGlow{to{filter:drop-shadow(0 0 10px #fff17d)}}
+@media(max-width:900px){
+ .hero #v56TrackWrap{width:min(720px,94vw)!important;bottom:118px!important;height:124px!important}
+ #compactCurrent{transform:scale(.86);transform-origin:left center;margin-right:-20px}
+ #compactRewardViewport{height:114px}
+ #compactRewardRail{transform-origin:left center}
+ .hero .actions{bottom:16px!important;gap:8px!important;width:96%!important;justify-content:center}
+ .hero .wishAction{width:calc((100vw - 32px)/2)!important;height:auto!important;aspect-ratio:350/122}
+}
+</style>
+<script id="v85-reference-layout-js">
+(function(){
+ const values=[5,10,25,40,45,50,65,80,85,90,105,120];
+ const points=new Set([40,80,120]);
+ function build(){
+   const wrap=document.getElementById('v56TrackWrap'); if(!wrap||document.getElementById('compactRewardRail'))return;
+   wrap.innerHTML='<div id="compactCurrent" aria-label="当前累抽"><span id="compactCurrentCount">0</span></div><div id="compactRewardViewport" tabindex="0" role="group" aria-label="累计祈愿奖励，可左右滑动"><div id="compactRewardRail"></div></div>';
+   const view=document.getElementById('compactRewardViewport'),rail=document.getElementById('compactRewardRail');
+   rail.innerHTML=values.map(v=>'<button class="compactReward '+(points.has(v)?'points':'skin')+'" data-value="'+v+'" aria-label="累计'+v+'抽奖励"><span class="compactRewardIcon"></span><span class="compactRewardValue">'+v+'</span></button>').join('');
+   let x=0,start=0,base=0,drag=false,moved=false,pid=null,tapButton=null;
+   const minX=()=>Math.min(0,view.clientWidth-rail.scrollWidth);
+   const paint=()=>{x=Math.max(minX(),Math.min(0,x));rail.style.transform='translate3d('+x+'px,0,0)'};
+   view.addEventListener('pointerdown',e=>{drag=true;moved=false;pid=e.pointerId;start=e.clientX;base=x;tapButton=e.target.closest('.compactRewardValue')?.closest('.compactReward')||null;view.setPointerCapture(pid)});
+   view.addEventListener('pointermove',e=>{if(!drag||e.pointerId!==pid)return;const dx=e.clientX-start;if(Math.abs(dx)>7)moved=true;x=base+dx;paint();if(moved)e.preventDefault()});
+   view.addEventListener('pointerup',e=>{if(!drag||e.pointerId!==pid)return;const b=tapButton,wasMoved=moved;drag=false;pid=null;tapButton=null;if(b&&!wasMoved){const v=+b.dataset.value;if(state.count>=v&&!state.claimed.includes(v))claimMilestone(v)}e.preventDefault()});
+   view.addEventListener('pointercancel',()=>{drag=false;pid=null;tapButton=null});
+   view.addEventListener('wheel',e=>{x-=e.deltaY||e.deltaX;paint();e.preventDefault()},{passive:false});
+   view.addEventListener('keydown',e=>{if(e.key==='ArrowRight')x-=110;else if(e.key==='ArrowLeft')x+=110;else if(e.key==='Home')x=0;else if(e.key==='End')x=minX();else return;paint();e.preventDefault()});
+   rail.addEventListener('keydown',e=>{if(e.key!=='Enter'&&e.key!==' ')return;const b=e.target.closest('.compactReward');if(!b)return;const v=+b.dataset.value;if(state.count>=v&&!state.claimed.includes(v))claimMilestone(v);e.preventDefault()});
+   addEventListener('resize',paint);paint();
+ }
+ function sync(){
+   build(); const wrap=document.getElementById('v56TrackWrap'),n=document.getElementById('compactCurrentCount');if(!n)return;
+   n.textContent=String(state.count);
+   document.querySelectorAll('.compactReward').forEach(b=>{const v=+b.dataset.value,got=state.claimed.includes(v);b.classList.toggle('claimed',got);b.classList.toggle('ready',state.count>=v&&!got);b.disabled=got||state.count<v});
+ }
+ sync();setInterval(sync,160);
+})();
+</script>
+<style id="v90-exact-reference-track">
+.hero #v56TrackWrap{
+  width:min(760px,92vw)!important;height:254px!important;bottom:112px!important;
+  transform:translateX(-50%) scale(.9)!important;transform-origin:center bottom!important;
+  overflow:hidden!important;background:none!important;
+}
+.hero #v56TrackWrap:before{content:none!important}
+#exactTrackViewport{position:absolute;inset:0;overflow:hidden;cursor:grab;touch-action:pan-y;outline:none}
+#exactTrackViewport:active{cursor:grabbing}
+#compactRewardRail.exactRail{
+  position:absolute;left:0;top:0;height:254px;width:max-content!important;
+  display:flex;align-items:flex-start;gap:0;padding:0;will-change:transform;
+}
+#exactReferenceStage{position:relative;flex:0 0 760px;width:760px;height:254px;overflow:hidden}
+#exactReferenceStage>img{display:block;width:760px;height:auto;pointer-events:none}
+#referenceCount{
+  position:absolute;left:11.35%;top:42.5%;transform:translate(-50%,-50%);
+  display:grid;place-items:center;width:62px;height:82px;border-radius:46%;
+  background:transparent;
+  color:#fff;font:1000 42px/1 Arial,"Microsoft YaHei",sans-serif;
+  -webkit-text-stroke:3px #2e148e;paint-order:stroke fill;text-shadow:0 2px 0 #321895;
+  pointer-events:none;
+}
+#referenceCount.hasValue{background:radial-gradient(ellipse,#765bdd 0%,#6043cf 70%,#5335bf 100%)}
+.exactHotspot{position:absolute;top:52%;width:12%;height:23%;border:0;background:transparent;cursor:pointer}
+.exactHotspot[data-value="5"]{left:26.1%}.exactHotspot[data-value="10"]{left:44.6%}.exactHotspot[data-value="25"]{left:63.0%}.exactHotspot[data-value="40"]{left:82.7%;width:14%}
+.exactHotspot.ready{filter:drop-shadow(0 0 10px #fff275)}
+.exactHotspot.claimed:after{content:"已领取";position:absolute;left:50%;top:54%;transform:translate(-50%,-50%) rotate(-7deg);padding:2px 7px;border:2px solid #fff;border-radius:7px;background:#6747a8;color:#fff;font-weight:900;white-space:nowrap}
+#exactLater{position:relative;flex:0 0 auto;height:254px;display:flex;align-items:flex-start;gap:26px;padding:44px 45px 0 28px}
+#exactLater:before{content:"";position:absolute;left:0;right:0;top:104px;height:16px;background:linear-gradient(#c495ff,#5126a0 48%,#331574 55%,#9563f0);box-shadow:0 0 7px #d9c2ff;z-index:-1}
+#exactLater .compactReward{flex:0 0 112px!important;width:112px!important;height:170px!important}
+#exactLater .compactRewardIcon{left:8px;top:4px;width:96px;height:88px;background-size:750px 249px;background-position:-204px -58px}
+#exactLater .compactReward.points{flex-basis:144px!important;width:144px!important}
+#exactLater .compactReward.points .compactRewardIcon{width:152px;height:132px;left:-4px;top:-7px;background-size:750px 249px;background-position:right -42px}
+#exactLater .compactRewardValue{bottom:10px;font-size:22px;min-width:70px}
+#exactLater .compactReward.points .compactRewardValue{bottom:21px;min-width:78px}
+@media(max-width:800px){
+ .hero #v56TrackWrap{width:94vw!important;height:31.4vw!important;bottom:104px!important;transform:translateX(-50%)!important}
+ #compactRewardRail.exactRail{height:31.4vw}
+ #exactReferenceStage{flex-basis:94vw;width:94vw;height:31.4vw}
+ #exactReferenceStage>img{width:94vw}
+ #referenceCount{width:7.7vw;height:10.2vw;font-size:5.2vw;-webkit-text-stroke:2px #2e148e}
+}
+</style>
+<script id="v90-exact-reference-track-js">
+(function(){
+ const wrap=document.getElementById('v56TrackWrap');if(!wrap)return;
  const groups=[[5,10,25,40],[45,50,65,80],[85,90,105,120]];
  const cycle=(g,index)=>'<div class="rewardCycle cycle'+index+'"><img src="'+(index===0?'assets/reference-progress.webp':index===1?'assets/rewards-45-80.webp':'assets/rewards-85-120.webp')+'" alt="累计'+g[0]+'至'+g[3]+'抽奖励"><div class="cycleLabels">'+g.map((v,i)=>'<button class="cycleReward c'+i+'" data-value="'+v+'" aria-label="累计'+v+'抽奖励"></button>').join('')+'</div></div>';
  wrap.innerHTML='<div id="fixedCurrent"><img src="assets/current-heart-clean.webp" alt="当前累抽"><span id="referenceCount"></span></div><div id="exactTrackViewport" tabindex="0" role="group" aria-label="累计祈愿奖励，可左右拖动"><div id="compactRewardRail" class="exactRail">'+groups.map(cycle).join('')+'</div></div>';
@@ -394,4 +2073,78 @@ render();
  requestAnimationFrame(()=>requestAnimationFrame(fitRail));setTimeout(fitRail,250);setTimeout(fitRail,900);
 })();
 </script>
+<style id="v91-fixed-current-three-cycles">
+.hero #v56TrackWrap{left:50%!important;right:auto!important;top:0!important;bottom:auto!important;width:760px!important;height:254px!important;transform:translateX(-50%) scale(var(--track-scale,.72))!important;transform-origin:center top!important;overflow:visible!important}
+#fixedCurrent{position:absolute;left:0;top:31px;width:190px;height:254px;overflow:visible;z-index:5;pointer-events:none}
+#fixedCurrent>img{position:absolute;left:0;top:15px;width:190px;height:auto;max-width:none}
+#referenceCount{position:absolute;left:95px;top:78px;transform:translate(-50%,-50%);width:auto;height:auto;background:none!important;border:0!important;border-radius:0!important;color:#fff;font:1000 43px/1 Arial,"Microsoft YaHei",sans-serif;-webkit-text-stroke:4px #2e148e;paint-order:stroke fill;text-shadow:0 2px 0 #321895;z-index:8;white-space:nowrap}
+#exactTrackViewport{position:absolute;left:155px;right:0;top:0;height:254px;overflow:hidden;touch-action:none;cursor:grab;z-index:3}
+#compactRewardRail.exactRail{display:flex;width:max-content;height:254px;will-change:transform;transition:none}
+#exactTrackViewport,#compactRewardRail.exactRail,.rewardCycle{transform-origin:top left}
+.rewardCycle{position:relative;flex:0 0 595px;width:595px;height:254px;overflow:hidden}
+.rewardCycle>img{position:absolute;left:-165px;top:0;width:760px;height:auto;max-width:none;pointer-events:none}
+.rewardCycle.cycle1>img,.rewardCycle.cycle2>img{left:0;top:27px;width:595px}
+.cycleLabels{position:absolute;inset:0}
+.cycleReward{position:absolute;top:72px;width:105px;height:125px;border:0;background:transparent;cursor:pointer;padding:0;color:transparent}
+.cycleReward.c0{left:48px}.cycleReward.c1{left:184px}.cycleReward.c2{left:320px}.cycleReward.c3{left:470px;width:90px}
+.rewardCycle.cycle1 .cycleReward.c0,.rewardCycle.cycle2 .cycleReward.c0{left:14px}
+.rewardCycle.cycle1 .cycleReward.c1,.rewardCycle.cycle2 .cycleReward.c1{left:156px}
+.rewardCycle.cycle1 .cycleReward.c2,.rewardCycle.cycle2 .cycleReward.c2{left:294px}
+.rewardCycle.cycle1 .cycleReward.c3,.rewardCycle.cycle2 .cycleReward.c3{left:438px;width:105px}
+.cycleReward.ready{filter:drop-shadow(0 0 10px #fff275)}
+.cycleReward.claimed:after{content:"已领取";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-7deg);padding:2px 6px;border:2px solid #fff;border-radius:7px;background:#6747a8;color:#fff;font:900 14px/1.2 "Microsoft YaHei";white-space:nowrap}
+@media(max-width:800px){.hero #v56TrackWrap{width:760px!important;height:254px!important;transform:translateX(-50%) scale(var(--track-scale,.72))!important;transform-origin:center top!important}#fixedCurrent,#exactTrackViewport,#compactRewardRail.exactRail,.rewardCycle{transform-origin:left top}}
+@media(max-width:800px){.hero .actions{bottom:calc(16px + env(safe-area-inset-bottom))!important}.side{top:calc(132px + env(safe-area-inset-top));right:8px;bottom:auto;gap:7px;z-index:60}.side button{padding:8px 10px;font-size:12px;line-height:1.2;border-radius:16px}}
+</style>
+<style id="wechat-landscape-single-screen">
+@media screen and (orientation:landscape) and (max-height:600px){
+  html,body{height:100%!important;min-height:0!important;overflow:hidden!important}
+  #app,.hero{height:100vh!important;height:100dvh!important;min-height:0!important;overflow:hidden!important}
+  #bg4kStage{height:100vh!important;height:100dvh!important}
+  #bg4kSolo{height:100vh!important;height:100dvh!important}
+  .titleBanner{top:2px!important;left:1vw!important;width:min(32vw,270px)!important}
+  .liveCoinPatch{right:42vw!important;top:4px!important;width:min(150px,18vw)!important;height:min(50px,12vh)!important}
+  .wishBanner{top:2px!important;right:1vw!important;width:min(28vw,240px)!important;aspect-ratio:2048/682!important}
+  #skyBannerSecondary{top:calc(7px + min(28vw,240px) * 682 / 2048)!important;left:auto!important;right:1vw!important;width:min(28vw,240px)!important;height:auto!important;aspect-ratio:2048/682!important}
+  .hero .actions{bottom:calc(10px + env(safe-area-inset-bottom))!important;gap:8px!important;width:96vw!important;justify-content:center!important}
+  .hero .wishAction{width:min(350px,calc((100vw - 32px)/2))!important;height:auto!important;aspect-ratio:350/122!important}
+  .side{top:calc(14px + min(28vw,240px) * 682 / 2048 * 2)!important;right:1vw!important;left:auto!important;bottom:auto!important;display:flex!important;flex-direction:row!important;gap:4px!important;z-index:60!important}
+  .side button{padding:5px 7px!important;font-size:clamp(8px,1.25vw,11px)!important;line-height:1!important;white-space:nowrap!important}
+}
+</style>
+<style id="mobile-result-fit-and-video-visibility">
+/* Landscape phones: fit the whole ten-pull fan into the viewport, and let
+   the autoplaying background remain visible behind the result overlay. */
+@media screen and (orientation:landscape) and (max-height:600px) and (max-width:1000px){
+  .resultBox{
+    padding:0!important;
+    background:rgba(8,2,20,.22)!important;
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+  }
+  .results{
+    width:100vw!important;max-width:none!important;height:100dvh!important;
+    min-height:0!important;padding:0!important;justify-content:center!important;
+  }
+  .results h1{
+    position:absolute!important;top:2vh!important;left:0;right:0;
+    margin:0!important;font-size:clamp(18px,5vh,30px)!important;
+  }
+  #loot.ten-pull{
+    position:absolute!important;left:50%!important;
+    top:calc(50% + 100px * var(--mobile-result-scale))!important;
+    width:1530px!important;height:390px!important;min-height:0!important;
+    margin:0!important;
+    --mobile-result-scale:min(calc((100vw - 20px) / 1530),calc((100dvh - 92px) / 475));
+    transform:translate(-50%,-50%) scale(var(--mobile-result-scale))!important;
+    transform-origin:center center!important;
+  }
+  .resultConfirm{
+    position:absolute!important;left:50%!important;bottom:2vh!important;
+    transform:translateX(-50%)!important;width:min(240px,48vw)!important;
+    height:clamp(38px,11vh,50px)!important;margin:0!important;
+    font-size:clamp(16px,4vh,21px)!important;
+  }
+}
+</style>
 </body></html>
